@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,14 +19,20 @@ class CozinhaController {
     CozinhaService cozinhaService
 
     @GetMapping
-    ResponseEntity<Cozinha> listar(){
-        List<Cozinha> cozinhas = cozinhaService.listar()
+    ResponseEntity<Cozinha> findAll(){
+        List<Cozinha> cozinhas = cozinhaService.findAll()
         return ResponseEntity.ok(cozinhas) as ResponseEntity<Cozinha>
     }
 
+    @GetMapping("/{id}")
+    ResponseEntity<Cozinha> findOne(@PathVariable("id") Long id){
+        Optional<Cozinha> cozinha = cozinhaService.findOne(id)
+        return ResponseEntity.ok(cozinha) as ResponseEntity<Cozinha>
+    }
+
     @PostMapping
-    ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha){
-        Cozinha cozinhaAdicionado = cozinhaService.adicionar(cozinha)
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaAdicionado)
+    ResponseEntity<Cozinha> create(@RequestBody Cozinha cozinha){
+        Cozinha cozinhaAdded = cozinhaService.create(cozinha)
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaAdded)
     }
 }

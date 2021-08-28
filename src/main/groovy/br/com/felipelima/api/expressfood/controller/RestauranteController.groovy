@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,14 +20,20 @@ class RestauranteController {
     RestauranteService restauranteService
 
     @GetMapping
-    ResponseEntity<Restaurante> listar(){
-        List<Restaurante> restaurantes = restauranteService.listar()
+    ResponseEntity<Restaurante> findAll(){
+        List<Restaurante> restaurantes = restauranteService.findAll()
         return ResponseEntity.ok(restaurantes) as ResponseEntity<Restaurante>
     }
 
+    @GetMapping("/{id}")
+    ResponseEntity<Restaurante> findOne(@PathVariable("id") Long id){
+        Optional<Restaurante> restaurante = restauranteService.findOne(id)
+        return ResponseEntity.ok(restaurante) as ResponseEntity<Restaurante>
+    }
+
     @PostMapping
-    ResponseEntity<Restaurante> adicionar(@RequestBody Restaurante restaurante){
-        Restaurante restauranteAdicionado = restauranteService.adicionar(restaurante)
-        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteAdicionado)
+    ResponseEntity<Restaurante> create(@RequestBody Restaurante restaurante){
+        Restaurante restauranteAdded = restauranteService.create(restaurante)
+        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteAdded)
     }
 }
