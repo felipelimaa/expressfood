@@ -14,7 +14,7 @@ import javax.persistence.Id
 @EqualsAndHashCode
 class Cozinha {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="cozinha_id")
     Long id
 

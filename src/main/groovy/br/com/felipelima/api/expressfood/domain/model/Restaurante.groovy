@@ -5,6 +5,8 @@ import groovy.transform.ToString
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
@@ -12,6 +14,7 @@ import javax.persistence.Id
 @EqualsAndHashCode
 class Restaurante {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="restaurante_id")
     Long id
 
