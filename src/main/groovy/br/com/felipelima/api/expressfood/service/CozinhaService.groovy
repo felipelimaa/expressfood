@@ -31,7 +31,6 @@ class CozinhaService {
     Cozinha update(Cozinha cozinha, Long id){
         def cozinhaUpdated = get(id)
 
-        cozinhaUpdated.id = id
         cozinhaUpdated.nome = cozinha.nome
 
         return cozinhaRepository.save(cozinhaUpdated)

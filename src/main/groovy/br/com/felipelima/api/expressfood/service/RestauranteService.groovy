@@ -31,7 +31,6 @@ class RestauranteService {
     Restaurante update(Restaurante restaurante, Long id){
         def restauranteUpdated = get(id)
 
-        restauranteUpdated.id = id
         restauranteUpdated.nome = restaurante.nome
         restauranteUpdated.taxaFrete = restaurante.taxaFrete
 
