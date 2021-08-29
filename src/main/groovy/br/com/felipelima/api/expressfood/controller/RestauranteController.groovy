@@ -36,4 +36,5 @@ class RestauranteController {
         Restaurante restauranteAdded = restauranteService.create(restaurante)
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteAdded)
     }
+
 }

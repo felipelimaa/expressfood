@@ -25,4 +25,5 @@ class CozinhaService {
     Cozinha create(Cozinha cozinha){
         return cozinhaRepository.save(cozinha)
     }
+
 }

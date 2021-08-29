@@ -25,5 +25,4 @@ class RestauranteService {
     Restaurante create(Restaurante restaurante){
         return restauranteRepository.save(restaurante)
     }
-
 }

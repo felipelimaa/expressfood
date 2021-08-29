@@ -35,4 +35,5 @@ class CozinhaController {
         Cozinha cozinhaAdded = cozinhaService.create(cozinha)
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaAdded)
     }
+
 }
