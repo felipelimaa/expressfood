@@ -33,6 +33,7 @@ class RestauranteService {
 
         restauranteUpdated.nome = restaurante.nome
         restauranteUpdated.taxaFrete = restaurante.taxaFrete
+        restauranteUpdated.cozinha = restaurante.cozinha
 
         return restauranteRepository.save(restauranteUpdated)
     }

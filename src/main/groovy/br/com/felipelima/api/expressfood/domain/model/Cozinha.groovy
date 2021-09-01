@@ -10,13 +10,13 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-@ToString(includePackage = false,includeNames = true)
+@ToString(includePackage = false, includeNames = true)
 @EqualsAndHashCode
 class Cozinha {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="cozinha_id")
     Long id
 
+    @Column(nullable = false)
     String nome
 }
