@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/cozinha")
+@RequestMapping("/cozinhas")
 class CozinhaController {
     @Autowired
     CozinhaService cozinhaService
