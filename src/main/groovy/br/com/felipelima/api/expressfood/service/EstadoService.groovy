@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.service
 import br.com.felipelima.api.expressfood.domain.model.Estado
 import br.com.felipelima.api.expressfood.exception.EstadoNotFoundExcepetion
 import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -30,8 +31,7 @@ class EstadoService {
     Estado update(Estado estado, Long id){
         def estadoUpdated = findById(id)
 
-        estadoUpdated.nome = estado.nome
-        estadoUpdated.uf = estado.uf
+        BeanUtils.copyProperties(estado, estadoUpdated, "id")
 
         return estadoRepository.save(estadoUpdated)
     }

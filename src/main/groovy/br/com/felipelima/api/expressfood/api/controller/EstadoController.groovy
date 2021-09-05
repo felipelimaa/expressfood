@@ -41,7 +41,7 @@ class EstadoController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Estado> update(@RequestBody Estado estado, @PathVariable("id") Long id){
+    ResponseEntity<Estado> update(@RequestBody Estado estado, @PathVariable Long id){
         Estado estadoUpdated = estadoService.update(estado, id)
         return ResponseEntity.ok(estadoUpdated)
     }
