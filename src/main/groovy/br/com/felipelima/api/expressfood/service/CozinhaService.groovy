@@ -2,7 +2,7 @@ package br.com.felipelima.api.expressfood.service
 
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.exception.CozinhaNotFoundException
-import br.com.felipelima.api.expressfood.repository.CozinhaRepository
+import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
