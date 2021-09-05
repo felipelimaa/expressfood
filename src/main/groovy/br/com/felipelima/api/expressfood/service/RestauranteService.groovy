@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.service
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.exception.RestauranteNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.RestauranteRepository
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -31,9 +32,7 @@ class RestauranteService {
     Restaurante update(Restaurante restaurante, Long id){
         def restauranteUpdated = get(id)
 
-        restauranteUpdated.nome = restaurante.nome
-        restauranteUpdated.taxaFrete = restaurante.taxaFrete
-        restauranteUpdated.cozinha = restaurante.cozinha
+        BeanUtils.copyProperties(restaurante, restauranteUpdated, "id")
 
         return restauranteRepository.save(restauranteUpdated)
     }

@@ -41,7 +41,7 @@ class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Restaurante> update(@RequestBody Restaurante restaurante, @PathVariable("id") Long id){
+    ResponseEntity<Restaurante> update(@RequestBody Restaurante restaurante, @PathVariable Long id){
         Restaurante restauranteUpdated = restauranteService.update(restaurante, id)
         return ResponseEntity.ok(restauranteUpdated)
     }
