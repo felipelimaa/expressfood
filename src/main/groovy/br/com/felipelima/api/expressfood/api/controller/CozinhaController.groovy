@@ -43,7 +43,7 @@ class CozinhaController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Cozinha> update(@RequestBody Cozinha cozinha, @PathVariable("id") Long id){
+    ResponseEntity<Cozinha> update(@RequestBody Cozinha cozinha, @PathVariable Long id){
         Cozinha cozinhaUpdated = cozinhaService.update(cozinha, id)
         return ResponseEntity.ok(cozinhaUpdated)
     }

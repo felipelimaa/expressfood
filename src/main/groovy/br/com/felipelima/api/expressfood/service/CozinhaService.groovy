@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.service
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.exception.CozinhaNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -31,7 +32,7 @@ class CozinhaService {
     Cozinha update(Cozinha cozinha, Long id){
         def cozinhaUpdated = get(id)
 
-        cozinhaUpdated.nome = cozinha.nome
+        BeanUtils.copyProperties(cozinha, cozinhaUpdated, "id")
 
         return cozinhaRepository.save(cozinhaUpdated)
     }
