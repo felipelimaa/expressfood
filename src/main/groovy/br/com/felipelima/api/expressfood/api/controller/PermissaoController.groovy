@@ -41,7 +41,7 @@ class PermissaoController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Permissao> update(@RequestBody Permissao permissao, @PathVariable("id") Long id){
+    ResponseEntity<Permissao> update(@RequestBody Permissao permissao, @PathVariable Long id){
         Permissao permissaoUpdated = permissaoService.update(permissao, id)
         return ResponseEntity.ok(permissaoUpdated)
     }
