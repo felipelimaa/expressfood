@@ -41,7 +41,7 @@ class FormaPagamentoController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<FormaPagamento> update(@RequestBody FormaPagamento formaPagamento, @PathVariable("id") Long id){
+    ResponseEntity<FormaPagamento> update(@RequestBody FormaPagamento formaPagamento, @PathVariable Long id){
         FormaPagamento formaPagamentoUpdated = formaPagamentoService.update(formaPagamento, id)
         return ResponseEntity.ok(formaPagamentoUpdated)
     }

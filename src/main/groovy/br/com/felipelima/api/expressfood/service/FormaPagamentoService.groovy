@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.service
 import br.com.felipelima.api.expressfood.domain.model.FormaPagamento
 import br.com.felipelima.api.expressfood.exception.FormaPagamentoNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.FormaPagamentoRepository
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -31,7 +32,7 @@ class FormaPagamentoService {
     FormaPagamento update(FormaPagamento formaPagamento, Long id){
         def formaPagamentoUpdated = findById(id)
 
-        formaPagamentoUpdated.descricao = formaPagamento.descricao
+        BeanUtils.copyProperties(formaPagamento, formaPagamentoUpdated, "id")
 
         return formaPagamentoRepository.save(formaPagamentoUpdated)
     }
