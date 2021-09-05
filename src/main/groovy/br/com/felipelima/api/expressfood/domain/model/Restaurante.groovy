@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.domain.model
 
+import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 

@@ -1,4 +1,4 @@
-package br.com.felipelima.api.expressfood.controller
+package br.com.felipelima.api.expressfood.api.controller
 
 import br.com.felipelima.api.expressfood.domain.model.FormaPagamento
 import br.com.felipelima.api.expressfood.service.FormaPagamentoService

@@ -1,4 +1,4 @@
-package br.com.felipelima.api.expressfood.controller
+package br.com.felipelima.api.expressfood.api.controller
 
 import br.com.felipelima.api.expressfood.domain.model.Permissao
 import br.com.felipelima.api.expressfood.service.PermissaoService
