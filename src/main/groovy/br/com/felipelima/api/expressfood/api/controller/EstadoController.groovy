@@ -47,8 +47,8 @@ class EstadoController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Estado> remove(@PathVariable("id") Long id){
+    ResponseEntity<Estado> remove(@PathVariable Long id){
         Estado estadoRemoved = estadoService.remove(id)
-        return ResponseEntity.ok(estadoRemoved)
+        return ResponseEntity.noContent().build()
     }
 }

@@ -47,8 +47,8 @@ class CidadeController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Cidade> remove(@PathVariable("id") Long id){
+    ResponseEntity<Cidade> remove(@PathVariable Long id){
         Cidade cidadeRemoved = cidadeService.remove(id)
-        return ResponseEntity.ok(cidadeRemoved)
+        return ResponseEntity.noContent().build()
     }
 }

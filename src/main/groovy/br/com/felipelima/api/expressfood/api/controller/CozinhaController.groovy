@@ -51,7 +51,7 @@ class CozinhaController {
     @DeleteMapping("/{id}")
     ResponseEntity<Cozinha> remove(@PathVariable("id") Long id){
         Cozinha cozinhaRemoved = cozinhaService.remove(id)
-        return ResponseEntity.ok(cozinhaRemoved)
+        return ResponseEntity.noContent().build()
     }
 
 }

@@ -47,8 +47,8 @@ class FormaPagamentoController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<FormaPagamento> remove(@PathVariable("id") Long id){
+    ResponseEntity<FormaPagamento> remove(@PathVariable Long id){
         FormaPagamento formaPagamentoRemoved = formaPagamentoService.delete(id)
-        return ResponseEntity.ok(formaPagamentoRemoved)
+        return ResponseEntity.noContent().build()
     }
 }

@@ -47,9 +47,9 @@ class PermissaoController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Permissao> remove(@PathVariable("id") Long id){
+    ResponseEntity<Permissao> remove(@PathVariable Long id){
         Permissao permissaoRemoved = permissaoService.remove(id)
-        return ResponseEntity.ok(permissaoRemoved)
+        return ResponseEntity.noContent().build()
     }
 
 
