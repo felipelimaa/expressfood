@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.service
 import br.com.felipelima.api.expressfood.domain.model.Cidade
 import br.com.felipelima.api.expressfood.exception.CidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.CidadeRepository
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -39,8 +40,8 @@ class CidadeService {
         def cidadeUpdated = findById(id)
         def estado = estadoService.findById(cidade.estado.id)
 
-        cidadeUpdated.nome = cidade.nome
-        cidadeUpdated.estado = estado
+        BeanUtils.copyProperties(cidade, cidadeUpdated, "id")
+        BeanUtils.copyProperties(estado, cidadeUpdated.estado)
 
         cidadeRepository.save(cidadeUpdated)
 

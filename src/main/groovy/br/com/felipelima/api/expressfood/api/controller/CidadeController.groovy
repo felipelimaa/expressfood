@@ -41,7 +41,7 @@ class CidadeController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Cidade> update(@RequestBody Cidade cidade, @PathVariable("id") Long id){
+    ResponseEntity<Cidade> update(@RequestBody Cidade cidade, @PathVariable Long id){
         Cidade cidadeUpdated = cidadeService.update(cidade, id)
         return ResponseEntity.ok(cidadeUpdated)
     }
