@@ -29,7 +29,7 @@ class PermissaoController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Permissao> findById(@PathVariable("id") Long id){
+    ResponseEntity<Permissao> findById(@PathVariable Long id){
         Permissao permissao = permissaoService.findById(id)
         return ResponseEntity.ok(permissao) as ResponseEntity<Permissao>
     }

@@ -31,7 +31,7 @@ class CozinhaController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Cozinha> get(@PathVariable("id") Long id){
+    ResponseEntity<Cozinha> get(@PathVariable Long id){
         Cozinha cozinha = cozinhaService.get(id)
         return ResponseEntity.ok(cozinha) as ResponseEntity<Cozinha>
     }

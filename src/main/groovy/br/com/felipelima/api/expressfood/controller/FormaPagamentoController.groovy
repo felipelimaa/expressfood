@@ -29,7 +29,7 @@ class FormaPagamentoController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<FormaPagamento> findById(@PathVariable("id") Long id){
+    ResponseEntity<FormaPagamento> findById(@PathVariable Long id){
         FormaPagamento formaPagamento = formaPagamentoService.findById(id)
         return ResponseEntity.ok(formaPagamento) as ResponseEntity<FormaPagamento>
     }

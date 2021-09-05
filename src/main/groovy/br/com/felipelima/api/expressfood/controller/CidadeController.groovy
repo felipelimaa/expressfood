@@ -29,7 +29,7 @@ class CidadeController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Cidade> findById(@PathVariable("id") Long id){
+    ResponseEntity<Cidade> findById(@PathVariable Long id){
         Cidade cidade = cidadeService.findById(id)
         return ResponseEntity.ok(cidade) as ResponseEntity<Cidade>
     }

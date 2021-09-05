@@ -29,7 +29,7 @@ class EstadoController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Estado> findById(@PathVariable("id") Long id){
+    ResponseEntity<Estado> findById(@PathVariable Long id){
         Estado estado = estadoService.findById(id)
         return ResponseEntity.ok(estado) as ResponseEntity<Estado>
     }
