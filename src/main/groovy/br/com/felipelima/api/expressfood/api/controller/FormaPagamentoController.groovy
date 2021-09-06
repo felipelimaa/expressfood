@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.api.controller
 import br.com.felipelima.api.expressfood.domain.model.FormaPagamento
 import br.com.felipelima.api.expressfood.service.FormaPagamentoService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -48,7 +49,11 @@ class FormaPagamentoController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<FormaPagamento> remove(@PathVariable Long id){
-        FormaPagamento formaPagamentoRemoved = formaPagamentoService.delete(id)
-        return ResponseEntity.noContent().build()
+        try {
+            FormaPagamento formaPagamentoRemoved = formaPagamentoService.delete(id)
+            return ResponseEntity.noContent().build()
+        } catch (DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
     }
 }

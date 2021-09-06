@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.api.controller
 import br.com.felipelima.api.expressfood.domain.model.Cidade
 import br.com.felipelima.api.expressfood.service.CidadeService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -48,7 +49,11 @@ class CidadeController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Cidade> remove(@PathVariable Long id){
-        Cidade cidadeRemoved = cidadeService.remove(id)
-        return ResponseEntity.noContent().build()
+        try {
+            Cidade cidadeRemoved = cidadeService.remove(id)
+            return ResponseEntity.noContent().build()
+        } catch(DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.message) as ResponseEntity<Cidade>
+        }
     }
 }

@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.api.controller
 import br.com.felipelima.api.expressfood.domain.model.Estado
 import br.com.felipelima.api.expressfood.service.EstadoService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -48,7 +49,11 @@ class EstadoController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Estado> remove(@PathVariable Long id){
-        Estado estadoRemoved = estadoService.remove(id)
-        return ResponseEntity.noContent().build()
+        try {
+            Estado estadoRemoved = estadoService.remove(id)
+            return ResponseEntity.noContent().build()
+        } catch(DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
     }
 }

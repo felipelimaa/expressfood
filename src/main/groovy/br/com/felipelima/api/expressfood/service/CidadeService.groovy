@@ -5,6 +5,7 @@ import br.com.felipelima.api.expressfood.exception.CidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.CidadeRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional

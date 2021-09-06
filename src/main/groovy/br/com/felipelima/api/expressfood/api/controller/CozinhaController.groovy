@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.api.controller
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.service.CozinhaService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -50,8 +51,12 @@ class CozinhaController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Cozinha> remove(@PathVariable("id") Long id){
-        Cozinha cozinhaRemoved = cozinhaService.remove(id)
-        return ResponseEntity.noContent().build()
+        try {
+            Cozinha cozinhaRemoved = cozinhaService.remove(id)
+            return ResponseEntity.noContent().build()
+        } catch(DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
     }
 
 }
