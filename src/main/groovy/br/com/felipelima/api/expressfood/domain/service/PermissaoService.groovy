@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.domain.service
 
 import br.com.felipelima.api.expressfood.domain.model.Permissao
-import br.com.felipelima.api.expressfood.exception.PermissaoNotFoundException
+import br.com.felipelima.api.expressfood.domain.exception.PermissaoNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.PermissaoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired

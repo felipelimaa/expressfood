@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.domain.service
 
 import br.com.felipelima.api.expressfood.domain.model.Estado
-import br.com.felipelima.api.expressfood.exception.EstadoNotFoundExcepetion
+import br.com.felipelima.api.expressfood.domain.exception.EstadoNotFoundExcepetion
 import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired

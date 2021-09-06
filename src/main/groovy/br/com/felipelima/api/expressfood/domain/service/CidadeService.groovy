@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.domain.service
 
 import br.com.felipelima.api.expressfood.domain.model.Cidade
-import br.com.felipelima.api.expressfood.exception.CidadeNotFoundException
+import br.com.felipelima.api.expressfood.domain.exception.CidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.CidadeRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
