@@ -1,4 +1,4 @@
-package br.com.felipelima.api.expressfood.service
+package br.com.felipelima.api.expressfood.domain.service
 
 import br.com.felipelima.api.expressfood.domain.model.Estado
 import br.com.felipelima.api.expressfood.exception.EstadoNotFoundExcepetion

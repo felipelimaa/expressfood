@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.api.controller
 
 import br.com.felipelima.api.expressfood.domain.model.Permissao
-import br.com.felipelima.api.expressfood.service.PermissaoService
+import br.com.felipelima.api.expressfood.domain.service.PermissaoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus

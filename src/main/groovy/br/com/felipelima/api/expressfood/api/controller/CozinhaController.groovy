@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.api.controller
 
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
-import br.com.felipelima.api.expressfood.service.CozinhaService
+import br.com.felipelima.api.expressfood.domain.service.CozinhaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
