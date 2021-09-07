@@ -4,15 +4,12 @@ import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.domain.exception.CozinhaNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
-import java.sql.SQLDataException
-import java.sql.SQLIntegrityConstraintViolationException
 
 @Service
 class CozinhaService {
