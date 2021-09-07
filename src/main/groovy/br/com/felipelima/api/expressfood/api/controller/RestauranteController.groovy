@@ -49,12 +49,8 @@ class RestauranteController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Restaurante> remove(@PathVariable Long id){
-        try {
-            Restaurante restauranteDeleted = restauranteService.remove(id)
-            return ResponseEntity.noContent().build()
-        } catch(DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        Restaurante restauranteDeleted = restauranteService.remove(id)
+        return ResponseEntity.noContent().build()
     }
 
 }

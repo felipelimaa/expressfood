@@ -49,12 +49,8 @@ class PermissaoController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Permissao> remove(@PathVariable Long id){
-        try {
-            Permissao permissaoRemoved = permissaoService.remove(id)
-            return ResponseEntity.noContent().build()
-        } catch(DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        Permissao permissaoRemoved = permissaoService.remove(id)
+        return ResponseEntity.noContent().build()
     }
 
 

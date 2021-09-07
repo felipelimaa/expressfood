@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.api.controller
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.domain.service.CozinhaService
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,13 +51,9 @@ class CozinhaController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Cozinha> remove(@PathVariable("id") Long id){
-        try {
-            Cozinha cozinhaRemoved = cozinhaService.remove(id)
-            return ResponseEntity.noContent().build()
-        } catch(DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+    ResponseEntity<Cozinha> remove(@PathVariable Long id){
+        Cozinha cozinhaRemoved = cozinhaService.remove(id)
+        return ResponseEntity.noContent().build()
     }
 
 }

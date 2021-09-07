@@ -49,11 +49,7 @@ class FormaPagamentoController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<FormaPagamento> remove(@PathVariable Long id){
-        try {
-            FormaPagamento formaPagamentoRemoved = formaPagamentoService.delete(id)
-            return ResponseEntity.noContent().build()
-        } catch (DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        FormaPagamento formaPagamentoRemoved = formaPagamentoService.delete(id)
+        return ResponseEntity.noContent().build()
     }
 }

@@ -1,10 +1,12 @@
 package br.com.felipelima.api.expressfood.domain.service
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.model.Estado
 import br.com.felipelima.api.expressfood.domain.exception.EstadoNotFoundExcepetion
 import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
@@ -39,7 +41,11 @@ class EstadoService {
     @Transactional
     Estado remove(Long id){
         def estadoRemoved = findById(id)
-
-        return estadoRepository.delete(estadoRemoved)
+        try {
+            estadoRepository.delete(estadoRemoved)
+            estadoRepository.flush()
+        } catch(DataIntegrityViolationException e){
+            throw new EntidadeEmUsoException(String.format("Estado de código %d não pode ser removido, pois está em uso.", id))
+        }
     }
 }

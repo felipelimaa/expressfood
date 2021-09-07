@@ -49,11 +49,7 @@ class CidadeController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Cidade> remove(@PathVariable Long id){
-        try {
-            Cidade cidadeRemoved = cidadeService.remove(id)
-            return ResponseEntity.noContent().build()
-        } catch(DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.message) as ResponseEntity<Cidade>
-        }
+        Cidade cidadeRemoved = cidadeService.remove(id)
+        return ResponseEntity.noContent().build()
     }
 }
