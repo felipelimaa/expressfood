@@ -1,8 +1,8 @@
 package br.com.felipelima.api.expressfood.domain.service
 
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
-import br.com.felipelima.api.expressfood.domain.exception.CozinhaNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +22,9 @@ class CozinhaService {
     }
 
     Cozinha get(Long id){
-        return cozinhaRepository.findById(id).orElseThrow{new CozinhaNotFoundException()}
+        return cozinhaRepository.findById(id).orElseThrow{
+            new EntidadeNotFoundException(String.format("Cozinha de código %d não encontrada.", id))
+        }
     }
 
     @Transactional

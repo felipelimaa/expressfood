@@ -1,8 +1,8 @@
 package br.com.felipelima.api.expressfood.domain.service
 
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Estado
-import br.com.felipelima.api.expressfood.domain.exception.EstadoNotFoundExcepetion
 import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +21,9 @@ class EstadoService {
     }
 
     Estado findById(Long id){
-        return estadoRepository.findById(id).orElseThrow{new EstadoNotFoundExcepetion()}
+        return estadoRepository.findById(id).orElseThrow{
+            new EntidadeNotFoundException(String.format("Cidade de código %d não encontrada.", id))
+        }
     }
 
     @Transactional

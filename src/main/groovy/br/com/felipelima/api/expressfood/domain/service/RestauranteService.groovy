@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.domain.service
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
-import br.com.felipelima.api.expressfood.domain.exception.RestauranteNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.RestauranteRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,9 @@ class RestauranteService {
     }
 
     Restaurante get(Long id){
-        return restauranteRepository.findById(id).orElseThrow{new RestauranteNotFoundException()}
+        return restauranteRepository.findById(id).orElseThrow{
+            new EntidadeNotFoundException(String.format("Restaurante de código %d não encontrado.", id))
+        }
     }
 
     @Transactional

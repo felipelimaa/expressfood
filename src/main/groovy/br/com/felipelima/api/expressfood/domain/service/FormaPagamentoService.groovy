@@ -1,7 +1,7 @@
 package br.com.felipelima.api.expressfood.domain.service
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.FormaPagamento
-import br.com.felipelima.api.expressfood.domain.exception.FormaPagamentoNotFoundException
 import br.com.felipelima.api.expressfood.domain.repository.FormaPagamentoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,9 @@ class FormaPagamentoService {
     }
 
     FormaPagamento findById(Long id){
-        return formaPagamentoRepository.findById(id).orElseThrow{new FormaPagamentoNotFoundException()}
+        return formaPagamentoRepository.findById(id).orElseThrow{
+            new EntidadeNotFoundException(String.format("Forma de Pagamento de código %d não encontrada.", id))
+        }
     }
 
     @Transactional
