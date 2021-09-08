@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
 class EntidadeNotFoundException extends ResponseStatusException{
-    EntidadeNotFoundException(String mensagem) {
-        super(HttpStatus.NOT_FOUND, mensagem)
+    EntidadeNotFoundException(Enum<HttpStatus> status, String mensagem) {
+        super(status as HttpStatus, mensagem)
     }
 }
