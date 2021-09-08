@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.api.controller
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.service.RestauranteService
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,27 +29,43 @@ class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Restaurante> get(@PathVariable Long id){
-        Restaurante restaurante = restauranteService.get(id)
-        return ResponseEntity.ok(restaurante)
+    ResponseEntity<?> get(@PathVariable Long id){
+        try {
+            Restaurante restaurante = restauranteService.get(id)
+            return ResponseEntity.ok(restaurante)
+        } catch(EntidadeNotFoundException e){
+            return ResponseEntity.status(e.status).body(e.message)
+        }
     }
 
     @PostMapping
-    ResponseEntity<Restaurante> create(@RequestBody Restaurante restaurante){
-        Restaurante restauranteAdded = restauranteService.create(restaurante)
-        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteAdded)
+    ResponseEntity<?> create(@RequestBody Restaurante restaurante){
+        try {
+            Restaurante restauranteAdded = restauranteService.create(restaurante)
+            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteAdded)
+        } catch(EntidadeNotFoundException e){
+            return ResponseEntity.status(e.status).body(e.message)
+        }
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Restaurante> update(@RequestBody Restaurante restaurante, @PathVariable Long id){
-        Restaurante restauranteUpdated = restauranteService.update(restaurante, id)
-        return ResponseEntity.ok(restauranteUpdated)
+    ResponseEntity<?> update(@RequestBody Restaurante restaurante, @PathVariable Long id){
+        try {
+            Restaurante restauranteUpdated = restauranteService.update(restaurante, id)
+            return ResponseEntity.ok(restauranteUpdated)
+        } catch(EntidadeNotFoundException e){
+            return ResponseEntity.status(e.status).body(e.message)
+        }
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Restaurante> remove(@PathVariable Long id){
-        Restaurante restauranteDeleted = restauranteService.remove(id)
-        return ResponseEntity.noContent().build()
+    ResponseEntity<?> remove(@PathVariable Long id){
+        try {
+            Restaurante restauranteDeleted = restauranteService.remove(id)
+            return ResponseEntity.noContent().build()
+        } catch(EntidadeNotFoundException e){
+            return ResponseEntity.status(e.status).body(e.message)
+        }
     }
 
 }
