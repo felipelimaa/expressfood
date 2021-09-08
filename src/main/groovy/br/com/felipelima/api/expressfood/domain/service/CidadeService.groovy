@@ -3,6 +3,7 @@ package br.com.felipelima.api.expressfood.domain.service
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Cidade
 import br.com.felipelima.api.expressfood.domain.repository.CidadeRepository
+import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -17,7 +18,7 @@ class CidadeService {
     CidadeRepository cidadeRepository
 
     @Autowired
-    EstadoService estadoService
+    EstadoRepository estadoRepository
 
     List<Cidade> findAll() {
         return cidadeRepository.findAll()
@@ -34,24 +35,34 @@ class CidadeService {
 
     @Transactional
     Cidade create(Cidade cidade){
-        def cidadeAdded = cidadeRepository.save(cidade)
-        def estado = estadoService.findById(cidadeAdded.estado.id)
+        def estadoId = cidade.estado.id
+        def estadoExists = estadoRepository.findById(estadoId).orElseThrow{
+            new EntidadeNotFoundException(
+                    HttpStatus.BAD_REQUEST,
+                    String.format("Estado de código %d não encontrado.", estadoId)
+            )
+        }
 
-        cidadeAdded.estado = estado
-        return cidadeAdded
+        cidade.estado = estadoExists
+
+        return cidadeRepository.save(cidade)
     }
 
     @Transactional
     Cidade update(Cidade cidade, Long id){
         def cidadeUpdated = findById(id)
-        def estado = estadoService.findById(cidade.estado.id)
+        def estadoId = cidade.estado.id
+        def estadoExists = estadoRepository.findById(estadoId).orElseThrow{
+            new EntidadeNotFoundException(
+                    HttpStatus.BAD_REQUEST,
+                    String.format("Estado de código %d não encontrado.", estadoId)
+            )
+        }
 
         BeanUtils.copyProperties(cidade, cidadeUpdated, "id")
-        BeanUtils.copyProperties(estado, cidadeUpdated.estado)
+        BeanUtils.copyProperties(estadoExists, cidadeUpdated.estado)
 
-        cidadeRepository.save(cidadeUpdated)
-
-        return cidadeUpdated
+        return cidadeRepository.save(cidadeUpdated)
     }
 
     @Transactional
