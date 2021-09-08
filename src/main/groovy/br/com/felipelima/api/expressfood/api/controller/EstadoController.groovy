@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.api.controller
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.model.Estado
 import br.com.felipelima.api.expressfood.domain.service.EstadoService
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,8 +47,12 @@ class EstadoController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Estado> remove(@PathVariable Long id){
-        Estado estadoRemoved = estadoService.remove(id)
-        return ResponseEntity.noContent().build()
+    ResponseEntity<?> remove(@PathVariable Long id){
+        try {
+            Estado estadoRemoved = estadoService.remove(id)
+            return ResponseEntity.noContent().build()
+        } catch(EntidadeEmUsoException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.message)
+        }
     }
 }
