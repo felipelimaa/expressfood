@@ -32,7 +32,7 @@ class RestauranteService {
 
     @Transactional
     Restaurante create(Restaurante restaurante){
-        Long cozinhaId = restaurante.cozinha.id
+        def cozinhaId = restaurante.cozinha.id
         def cozinhaExists = cozinhaRepository.findById(cozinhaId).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.BAD_REQUEST,
@@ -48,7 +48,7 @@ class RestauranteService {
     @Transactional
     Restaurante update(Restaurante restaurante, Long id){
         def restauranteUpdated = get(id)
-        Long cozinhaId = restaurante.cozinha.id
+        def cozinhaId = restaurante.cozinha.id
         def cozinhaExists = cozinhaRepository.findById(cozinhaId).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.BAD_REQUEST,
