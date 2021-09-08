@@ -5,6 +5,7 @@ import br.com.felipelima.api.expressfood.domain.model.Cidade
 import br.com.felipelima.api.expressfood.domain.repository.CidadeRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
@@ -24,7 +25,10 @@ class CidadeService {
 
     Cidade findById(Long id){
         return cidadeRepository.findById(id).orElseThrow{
-            new EntidadeNotFoundException(String.format("Cidade de código %d não encontrada.", id))
+            new EntidadeNotFoundException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("Cidade de código %d não encontrada.", id)
+            )
         }
     }
 

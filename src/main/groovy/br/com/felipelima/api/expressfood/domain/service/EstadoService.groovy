@@ -7,6 +7,7 @@ import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
@@ -22,7 +23,10 @@ class EstadoService {
 
     Estado findById(Long id){
         return estadoRepository.findById(id).orElseThrow{
-            new EntidadeNotFoundException(String.format("Cidade de código %d não encontrada.", id))
+            new EntidadeNotFoundException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("Cidade de código %d não encontrada.", id)
+            )
         }
     }
 

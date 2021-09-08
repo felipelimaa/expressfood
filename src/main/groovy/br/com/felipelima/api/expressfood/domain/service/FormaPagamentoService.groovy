@@ -5,6 +5,7 @@ import br.com.felipelima.api.expressfood.domain.model.FormaPagamento
 import br.com.felipelima.api.expressfood.domain.repository.FormaPagamentoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
@@ -21,7 +22,10 @@ class FormaPagamentoService {
 
     FormaPagamento findById(Long id){
         return formaPagamentoRepository.findById(id).orElseThrow{
-            new EntidadeNotFoundException(String.format("Forma de Pagamento de código %d não encontrada.", id))
+            new EntidadeNotFoundException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("Forma de Pagamento de código %d não encontrada.", id)
+            )
         }
     }
 

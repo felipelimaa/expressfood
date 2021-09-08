@@ -7,6 +7,7 @@ import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
@@ -23,7 +24,10 @@ class CozinhaService {
 
     Cozinha get(Long id){
         return cozinhaRepository.findById(id).orElseThrow{
-            new EntidadeNotFoundException(String.format("Cozinha de código %d não encontrada.", id))
+            new EntidadeNotFoundException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("Cozinha de código %d não encontrada.", id)
+            )
         }
     }
 
