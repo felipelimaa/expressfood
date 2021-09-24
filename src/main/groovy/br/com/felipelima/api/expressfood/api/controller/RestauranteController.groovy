@@ -33,6 +33,12 @@ class RestauranteController {
         return ResponseEntity.ok(restaurantes) as ResponseEntity<Restaurante>
     }
 
+    @GetMapping("/taxa-frete-gratis")
+    ResponseEntity<Restaurante> findByTaxaFreteGratis(){
+        List<Restaurante> restaurantes = restauranteService.findByTaxaFreteGratis()
+        return ResponseEntity.ok(restaurantes) as ResponseEntity<Restaurante>
+    }
+
     @GetMapping("/{id}")
     ResponseEntity<Restaurante> get(@PathVariable Long id){
         try {

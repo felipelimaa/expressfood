@@ -30,6 +30,10 @@ class RestauranteService {
         }
     }
 
+    List<Restaurante> findByTaxaFreteGratis(){
+        return restauranteRepository.findByTaxaFreteEquals(0.0)
+    }
+
     @Transactional
     Restaurante create(Restaurante restaurante){
         def cozinhaId = restaurante.cozinha.id
