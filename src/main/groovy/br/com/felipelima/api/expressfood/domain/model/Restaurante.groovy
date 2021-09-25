@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 
 @Entity
@@ -29,5 +31,13 @@ class Restaurante {
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     Cozinha cozinha
+
+    @ManyToMany
+    @JoinTable(
+            name = "restaurante_forma_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
+    )
+    List<FormaPagamento> formasPagamento = new ArrayList<>()
 
 }

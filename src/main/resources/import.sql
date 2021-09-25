@@ -27,3 +27,10 @@ insert into cidade (id, nome, estado_id) values (4, 'Campina Grande', 2);
 -- Permissões
 insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
+
+-- Formas de Pagamento associados ao Restaurante
+insert into restaurante_forma_pagamento values (1, 1);
+insert into restaurante_forma_pagamento values (1, 2);
+insert into restaurante_forma_pagamento values (1, 3);
+insert into restaurante_forma_pagamento values (2, 2);
+insert into restaurante_forma_pagamento values (2, 3);
