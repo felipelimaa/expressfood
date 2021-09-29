@@ -1,10 +1,12 @@
 package br.com.felipelima.api.expressfood.domain.model
 
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 import javax.persistence.Column
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -32,6 +34,11 @@ class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     Cozinha cozinha
 
+    @JsonIgnore
+    @Embedded
+    Endereco endereco
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "restaurante_forma_pagamento",
