@@ -62,7 +62,7 @@ class RestauranteService {
 
         restaurante.cozinha = cozinhaExists
 
-        BeanUtils.copyProperties(restaurante, restauranteUpdated, "id")
+        BeanUtils.copyProperties(restaurante, restauranteUpdated, "id", "formasPagamento", "endereco")
 
         return restauranteRepository.save(restauranteUpdated)
     }
