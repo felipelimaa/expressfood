@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 import java.time.LocalDateTime
 
 @Entity
@@ -59,5 +60,10 @@ class Restaurante {
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     LocalDateTime dataAtualizacao
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    List<Produto> produtos = new ArrayList<>()
+
 
 }

@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.api.controller
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.service.RestauranteService
@@ -85,6 +86,8 @@ class RestauranteController {
             return ResponseEntity.noContent().build()
         } catch(EntidadeNotFoundException e){
             return ResponseEntity.status(e.status).body(e.message)
+        } catch(EntidadeEmUsoException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.message)
         }
     }
 

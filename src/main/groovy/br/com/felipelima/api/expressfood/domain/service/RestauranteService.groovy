@@ -1,11 +1,13 @@
 package br.com.felipelima.api.expressfood.domain.service
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
 import br.com.felipelima.api.expressfood.domain.repository.RestauranteRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
@@ -62,7 +64,7 @@ class RestauranteService {
 
         restaurante.cozinha = cozinhaExists
 
-        BeanUtils.copyProperties(restaurante, restauranteUpdated, "id", "formasPagamento", "endereco", "dataCadastro")
+        BeanUtils.copyProperties(restaurante, restauranteUpdated, "id", "formasPagamento", "endereco", "dataCadastro", "produtos")
 
         return restauranteRepository.save(restauranteUpdated)
     }
@@ -71,6 +73,11 @@ class RestauranteService {
     Restaurante remove(Long id){
         def restauranteDeleted = get(id)
 
-        return restauranteRepository.delete(restauranteDeleted)
+        try {
+            restauranteRepository.delete(restauranteDeleted)
+            restauranteRepository.flush()
+        } catch(DataIntegrityViolationException e){
+            throw new EntidadeEmUsoException(String.format("Restaurante de código %d não pode ser removido, pois está em uso.", id))
+        }
     }
 }
