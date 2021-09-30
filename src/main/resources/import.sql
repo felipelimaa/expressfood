@@ -15,8 +15,8 @@ insert into cozinha (id, nome) values (3, 'Brasileira');
 
 -- Restaurante
 -- Dependências: Cozinha
-insert into restaurante (id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro) values (1, 'Churrascaria do Arnaldo', 8.99, 3, 1, 59073-100, 'Rua Paracati', 545, 'Condomínio Rosa dos Ventos', 'Planalto');
-insert into restaurante (id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro) values (2, 'Restaurante Pitel', 5.99, 3, 1, 59069-470, 'Rua Deputado Marcílio Furtado', 570, 'Próximo a escola CEEP', 'Pitimbu');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, data_cadastro, data_atualizacao) values (1, 'Churrascaria do Arnaldo', 8.99, 3, 1, 59073-100, 'Rua Paracati', 545, 'Condomínio Rosa dos Ventos', 'Planalto', utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, data_cadastro, data_atualizacao) values (2, 'Restaurante Pitel', 5.99, 3, 1, 59069-470, 'Rua Deputado Marcílio Furtado', 570, 'Próximo a escola CEEP', 'Pitimbu', utc_timestamp, utc_timestamp);
 
 -- Forma de Pagamento
 insert into forma_pagamento (id, descricao) values (1, 'Cartão de Crédito');

@@ -4,6 +4,8 @@ import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 
 import javax.persistence.Column
 import javax.persistence.Embedded
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
+import java.time.LocalDateTime
 
 @Entity
 @ToString(includePackage = false, includeNames = true)
@@ -46,5 +49,15 @@ class Restaurante {
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
     )
     List<FormaPagamento> formasPagamento = new ArrayList<>()
+
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    LocalDateTime dataCadastro
+
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    LocalDateTime dataAtualizacao
 
 }
