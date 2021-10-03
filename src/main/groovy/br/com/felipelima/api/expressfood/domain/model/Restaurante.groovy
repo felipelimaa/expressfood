@@ -2,6 +2,7 @@ package br.com.felipelima.api.expressfood.domain.model
 
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.annotations.CreationTimestamp
@@ -35,7 +36,8 @@ class Restaurante {
     @Column(name="taxa_frete", nullable = false)
     BigDecimal taxaFrete
 
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
     Cozinha cozinha

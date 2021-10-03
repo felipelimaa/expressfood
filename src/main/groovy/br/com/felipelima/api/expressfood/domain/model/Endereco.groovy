@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -29,6 +30,7 @@ class Endereco {
     @Column(name = "endereco_bairro")
     String bairro
 
+    @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_cidade_id")
     Cidade cidade
