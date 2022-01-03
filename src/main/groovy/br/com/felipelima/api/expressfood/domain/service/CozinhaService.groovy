@@ -15,6 +15,10 @@ import javax.transaction.Transactional
 @Service
 class CozinhaService {
 
+    String MSG_COZINHA_NOT_FOUND = "Cozinha de código %d não encontrada."
+
+    String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso."
+
     @Autowired
     CozinhaRepository cozinhaRepository
 
@@ -26,7 +30,7 @@ class CozinhaService {
         return cozinhaRepository.findById(id).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.NOT_FOUND,
-                    String.format("Cozinha de código %d não encontrada.", id)
+                    String.format(MSG_COZINHA_NOT_FOUND, id)
             )
         }
     }
@@ -53,7 +57,7 @@ class CozinhaService {
             cozinhaRepository.delete(cozinhaRemoved)
             cozinhaRepository.flush()
         } catch (DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pode ser removida, pois está em uso.", id))
+            throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, id))
         }
     }
 
