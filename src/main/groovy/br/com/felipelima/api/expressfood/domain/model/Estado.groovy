@@ -18,7 +18,7 @@ class Estado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "nome_estado")
     String nome
 
     @Column(nullable = false, length = 2)

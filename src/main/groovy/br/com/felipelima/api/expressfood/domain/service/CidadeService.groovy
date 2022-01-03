@@ -14,6 +14,10 @@ import javax.transaction.Transactional
 @Service
 class CidadeService {
 
+    String MSG_ESTADO_NOT_FOUND = "Estado de código %d não encontrado."
+
+    String MSG_CIDADE_NOT_FOUND = "Cidade de código %d não encontrada."
+
     @Autowired
     CidadeRepository cidadeRepository
 
@@ -28,7 +32,7 @@ class CidadeService {
         return cidadeRepository.findById(id).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.NOT_FOUND,
-                    String.format("Cidade de código %d não encontrada.", id)
+                    String.format(MSG_CIDADE_NOT_FOUND, id)
             )
         }
     }
@@ -39,7 +43,7 @@ class CidadeService {
         def estadoExists = estadoRepository.findById(estadoId).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.BAD_REQUEST,
-                    String.format("Estado de código %d não encontrado.", estadoId)
+                    String.format(MSG_ESTADO_NOT_FOUND, estadoId)
             )
         }
 
@@ -55,7 +59,7 @@ class CidadeService {
         def estadoExists = estadoRepository.findById(estadoId).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.BAD_REQUEST,
-                    String.format("Estado de código %d não encontrado.", estadoId)
+                    String.format(MSG_ESTADO_NOT_FOUND, estadoId)
             )
         }
 
