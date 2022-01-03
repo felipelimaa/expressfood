@@ -16,11 +16,15 @@ import javax.transaction.Transactional
 @Service
 class RestauranteService {
 
+    String MSG_RESTAURANTE_NOT_FOUND = "Restaurante de código %d não encontrado."
+
+    String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso."
+
     @Autowired
     RestauranteRepository restauranteRepository
 
     @Autowired
-    CozinhaRepository cozinhaRepository
+    CozinhaService cozinhaService
 
     List<Restaurante> findAll(){
         return restauranteRepository.findAll()
@@ -28,7 +32,7 @@ class RestauranteService {
 
     Restaurante get(Long id){
         return restauranteRepository.findById(id).orElseThrow{
-            new EntidadeNotFoundException(HttpStatus.NOT_FOUND, String.format("Restaurante de código %d não encontrado.", id))
+            new EntidadeNotFoundException(HttpStatus.NOT_FOUND, String.format(MSG_RESTAURANTE_NOT_FOUND, id))
         }
     }
 
@@ -39,12 +43,7 @@ class RestauranteService {
     @Transactional
     Restaurante create(Restaurante restaurante){
         def cozinhaId = restaurante.cozinha.id
-        def cozinhaExists = cozinhaRepository.findById(cozinhaId).orElseThrow{
-            new EntidadeNotFoundException(
-                    HttpStatus.BAD_REQUEST,
-                    String.format("Cozinha de código %d não encontrada.", cozinhaId)
-            )
-        }
+        def cozinhaExists = cozinhaService.get(cozinhaId)
 
         restaurante.cozinha = cozinhaExists
 
@@ -55,12 +54,7 @@ class RestauranteService {
     Restaurante update(Restaurante restaurante, Long id){
         def restauranteUpdated = get(id)
         def cozinhaId = restaurante.cozinha.id
-        def cozinhaExists = cozinhaRepository.findById(cozinhaId).orElseThrow{
-            new EntidadeNotFoundException(
-                    HttpStatus.BAD_REQUEST,
-                    String.format("Cozinha de código %d não encontrada.", cozinhaId)
-            )
-        }
+        def cozinhaExists = cozinhaService.get(cozinhaId)
 
         restaurante.cozinha = cozinhaExists
 
@@ -77,7 +71,7 @@ class RestauranteService {
             restauranteRepository.delete(restauranteDeleted)
             restauranteRepository.flush()
         } catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format("Restaurante de código %d não pode ser removido, pois está em uso.", id))
+            throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, id))
         }
     }
 }

@@ -42,32 +42,17 @@ class RestauranteController {
 
     @GetMapping("/{id}")
     ResponseEntity<Restaurante> get(@PathVariable Long id){
-        try {
-            Restaurante restaurante = restauranteService.get(id)
-            return ResponseEntity.ok(restaurante)
-        } catch(EntidadeNotFoundException e){
-            return ResponseEntity.status(e.status).body(e.message) as ResponseEntity<Restaurante>
-        }
+        return ResponseEntity.ok(restauranteService.get(id))
     }
 
     @PostMapping
     ResponseEntity<?> create(@RequestBody Restaurante restaurante){
-        try {
-            Restaurante restauranteAdded = restauranteService.create(restaurante)
-            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteAdded)
-        } catch(EntidadeNotFoundException e){
-            return ResponseEntity.status(e.status).body(e.message)
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.create(restaurante))
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> update(@RequestBody Restaurante restaurante, @PathVariable Long id){
-        try {
-            Restaurante restauranteUpdated = restauranteService.update(restaurante, id)
-            return ResponseEntity.ok(restauranteUpdated)
-        } catch(EntidadeNotFoundException e){
-            return ResponseEntity.status(e.status).body(e.message)
-        }
+        return ResponseEntity.ok(restauranteService.update(restaurante, id))
     }
 
     @PatchMapping("/{id}")
@@ -81,14 +66,8 @@ class RestauranteController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> remove(@PathVariable Long id){
-        try {
-            Restaurante restauranteDeleted = restauranteService.remove(id)
-            return ResponseEntity.noContent().build()
-        } catch(EntidadeNotFoundException e){
-            return ResponseEntity.status(e.status).body(e.message)
-        } catch(EntidadeEmUsoException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.message)
-        }
+        Restaurante restauranteDeleted = restauranteService.remove(id)
+        return ResponseEntity.noContent().build()
     }
 
     private merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino){
