@@ -49,11 +49,16 @@ class EstadoController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> remove(@PathVariable Long id){
-        try {
+        /*try {
             Estado estadoRemoved = estadoService.remove(id)
             return ResponseEntity.noContent().build()
         } catch(EntidadeEmUsoException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.message)
-        }
+            print(e.message)
+            throw new EntidadeEmUsoException(e.message)
+        }*/
+
+        Estado estadoRemoved = estadoService.remove(id)
+        return ResponseEntity.noContent().build()
+
     }
 }

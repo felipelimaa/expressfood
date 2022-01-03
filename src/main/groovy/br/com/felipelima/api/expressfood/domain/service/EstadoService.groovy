@@ -14,6 +14,11 @@ import javax.transaction.Transactional
 
 @Service
 class EstadoService {
+
+    String MSG_CIDADE_NOT_FOUND = "Cidade de código %d não encontrada"
+
+    String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removido, pois está em uso."
+
     @Autowired
     EstadoRepository estadoRepository
 
@@ -25,7 +30,7 @@ class EstadoService {
         return estadoRepository.findById(id).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.NOT_FOUND,
-                    String.format("Cidade de código %d não encontrada.", id)
+                    String.format(MSG_CIDADE_NOT_FOUND, id)
             )
         }
     }
@@ -51,7 +56,7 @@ class EstadoService {
             estadoRepository.delete(estadoRemoved)
             estadoRepository.flush()
         } catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format("Estado de código %d não pode ser removido, pois está em uso.", id))
+            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id))
         }
     }
 }
