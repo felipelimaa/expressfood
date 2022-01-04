@@ -15,7 +15,7 @@ import javax.transaction.Transactional
 @Service
 class EstadoService {
 
-    String MSG_CIDADE_NOT_FOUND = "Cidade de código %d não encontrada"
+    String MSG_ESTADO_NOT_FOUND = "Estado de código %d não encontrado"
 
     String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removido, pois está em uso."
 
@@ -30,7 +30,7 @@ class EstadoService {
         return estadoRepository.findById(id).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.NOT_FOUND,
-                    String.format(MSG_CIDADE_NOT_FOUND, id)
+                    String.format(MSG_ESTADO_NOT_FOUND, id)
             )
         }
     }
