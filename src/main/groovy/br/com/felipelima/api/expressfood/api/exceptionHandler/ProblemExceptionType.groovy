@@ -7,7 +7,8 @@ enum ProblemExceptionType {
     RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     MENSAGEM_NAO_LEGIVEL("/mensagem-nao-legivel", "Mensagem não legível"),
-    PARAMETRO_INVALIDO("/parametro-invalido", "Parametro inválido")
+    PARAMETRO_INVALIDO("/parametro-invalido", "Parametro inválido"),
+    ERRO_NAO_TRATADO("/erro-nao-tratado", "Erro não tratado")
 
 
     String title
