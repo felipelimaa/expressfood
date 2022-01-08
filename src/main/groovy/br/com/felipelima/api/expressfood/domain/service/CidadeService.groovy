@@ -1,11 +1,12 @@
 package br.com.felipelima.api.expressfood.domain.service
 
+import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Cidade
 import br.com.felipelima.api.expressfood.domain.repository.CidadeRepository
-import br.com.felipelima.api.expressfood.domain.repository.EstadoRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
@@ -14,15 +15,15 @@ import javax.transaction.Transactional
 @Service
 class CidadeService {
 
-    String MSG_ESTADO_NOT_FOUND = "Estado de código %d não encontrado."
-
     String MSG_CIDADE_NOT_FOUND = "Cidade de código %d não encontrada."
+
+    String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removido, pois está em uso."
 
     @Autowired
     CidadeRepository cidadeRepository
 
     @Autowired
-    EstadoRepository estadoRepository
+    EstadoService estadoService
 
     List<Cidade> findAll() {
         return cidadeRepository.findAll()
@@ -40,12 +41,7 @@ class CidadeService {
     @Transactional
     Cidade create(Cidade cidade){
         def estadoId = cidade.estado.id
-        def estadoExists = estadoRepository.findById(estadoId).orElseThrow{
-            new EntidadeNotFoundException(
-                    HttpStatus.BAD_REQUEST,
-                    String.format(MSG_ESTADO_NOT_FOUND, estadoId)
-            )
-        }
+        def estadoExists = estadoService.findById(estadoId)
 
         cidade.estado = estadoExists
 
@@ -56,12 +52,7 @@ class CidadeService {
     Cidade update(Cidade cidade, Long id){
         def cidadeUpdated = findById(id)
         def estadoId = cidade.estado.id
-        def estadoExists = estadoRepository.findById(estadoId).orElseThrow{
-            new EntidadeNotFoundException(
-                    HttpStatus.BAD_REQUEST,
-                    String.format(MSG_ESTADO_NOT_FOUND, estadoId)
-            )
-        }
+        def estadoExists = estadoService.findById(estadoId)
 
         BeanUtils.copyProperties(cidade, cidadeUpdated, "id")
         BeanUtils.copyProperties(estadoExists, cidadeUpdated.estado)
@@ -73,7 +64,12 @@ class CidadeService {
     Cidade remove(Long id){
         def cidadeRemoved = findById(id)
 
-        return cidadeRepository.delete(cidadeRemoved)
+        try {
+            cidadeRepository.delete(cidadeRemoved)
+            cidadeRepository.flush()
+        } catch(DataIntegrityViolationException e){
+            throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, id))
+        }
     }
 
 }

@@ -48,4 +48,5 @@ class CidadeController {
         Cidade cidadeRemoved = cidadeService.remove(id)
         return ResponseEntity.noContent().build()
     }
+
 }
