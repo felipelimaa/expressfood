@@ -18,6 +18,8 @@ class ProblemException {
 
     String detail
 
-    LocalDateTime dataHora
+    LocalDateTime timestamp
+
+    String uiMessage
 
 }
