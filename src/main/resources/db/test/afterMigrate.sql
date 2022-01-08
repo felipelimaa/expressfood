@@ -79,7 +79,6 @@ insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Pe
 insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
 
 -- Formas de Pagamento associados ao Restaurante
-delete from restaurante_forma_pagamento;
 insert into restaurante_forma_pagamento values (1, 1);
 insert into restaurante_forma_pagamento values (1, 2);
 insert into restaurante_forma_pagamento values (1, 3);

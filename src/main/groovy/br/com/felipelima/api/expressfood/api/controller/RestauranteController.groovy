@@ -4,10 +4,13 @@ import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.service.RestauranteService
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.util.ReflectionUtils
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -71,17 +74,26 @@ class RestauranteController {
     }
 
     private merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino){
-        ObjectMapper objectMapper = new ObjectMapper()
-        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante)
+        try {
+            ObjectMapper objectMapper = new ObjectMapper()
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true)
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
 
-        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-            Field field = ReflectionUtils.findField(Restaurante, nomePropriedade)
-            field.setAccessible(true)
+            Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante)
 
-            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem)
+            dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+                Field field = ReflectionUtils.findField(Restaurante, nomePropriedade)
+                field.setAccessible(true)
 
-            ReflectionUtils.setField(field, restauranteDestino, novoValor)
-        })
+                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem)
+
+                ReflectionUtils.setField(field, restauranteDestino, novoValor)
+            })
+        } catch (IllegalArgumentException e) {
+            Throwable rootCause = ExceptionUtils.getRootCause(e)
+
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause)
+        }
 
     }
 
