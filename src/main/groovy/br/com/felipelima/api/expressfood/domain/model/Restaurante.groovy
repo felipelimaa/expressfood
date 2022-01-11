@@ -1,6 +1,6 @@
 package br.com.felipelima.api.expressfood.domain.model
 
-import br.com.felipelima.api.expressfood.domain.model.Cozinha
+import br.com.felipelima.api.expressfood.api.Groups
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.EqualsAndHashCode
@@ -20,6 +20,12 @@ import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
+import javax.validation.Valid
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.PositiveOrZero
+import javax.validation.groups.ConvertGroup
+import javax.validation.groups.Default
 import java.time.LocalDateTime
 
 @Entity
@@ -30,13 +36,17 @@ class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
+    @NotBlank
     @Column(nullable = false)
     String nome
 
+    @PositiveOrZero
     @Column(name="taxa_frete", nullable = false)
     BigDecimal taxaFrete
 
-    //@JsonIgnore
+    @Valid
+    @NotNull
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)

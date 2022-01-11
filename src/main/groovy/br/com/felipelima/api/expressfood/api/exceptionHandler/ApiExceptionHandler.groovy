@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.lang.Nullable
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
@@ -29,11 +31,18 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Value('${expressfood.exception.uri-base}')
     String URI_BASE_EXCEPTION
 
+    @Value('${expressfood.exception.printlog}')
+    Boolean PRINT_LOG_EXCEPTION
+
     public static String MSG_ERRO_GENERICO = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
             "problema persistir, entre em contato com o administrador e sistema."
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        if (PRINT_LOG_EXCEPTION == true) {
+            print(ex.printStackTrace())
+        }
 
         if (body == null) {
             body = ProblemException.builder()
@@ -86,6 +95,35 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
+
+        ProblemExceptionType problemType = ProblemExceptionType.DADOS_INVALIDOS
+
+        String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."
+
+        BindingResult bindingResult = ex.getBindingResult()
+
+        List<ProblemException.Field> problemFields = bindingResult.getFieldErrors()
+                .stream()
+                .map(fieldError -> ProblemException.Field.builder()
+                    .name(fieldError.getField())
+                    .uiMessage(fieldError.getDefaultMessage())
+                    .build()
+                )
+                .collect(Collectors.toList())
+
+        ProblemException problem = createProblemBuilder(status, problemType, mensagem, mensagem, problemFields)
+
+        return handleExceptionInternal(ex, problem, headers, status, request)
+
+    }
+
+    @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException e,
             HttpHeaders headers,
@@ -117,6 +155,9 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     ResponseEntity<?> handleUncaught(Exception e, WebRequest request){
 
+        if (PRINT_LOG_EXCEPTION == true) {
+            print(e.printStackTrace())
+        }
         ProblemExceptionType problemType = ProblemExceptionType.ERRO_NAO_TRATADO
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR
@@ -239,6 +280,29 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .title(problemType.getTitle())
                 .detail(detail)
                 .uiMessage(uiMessage)
+                .build()
+    }
+
+    private ProblemException createProblemBuilder(
+            HttpStatus status,
+            ProblemExceptionType problemType,
+            String detail,
+            String uiMessage,
+            List<ProblemException.Field> fields
+    ){
+
+        if (uiMessage == null) {
+            uiMessage = MSG_ERRO_GENERICO
+        }
+
+        return ProblemException.builder()
+                .timestamp(LocalDateTime.now())
+                .status(status.value())
+                .type(URI_BASE_EXCEPTION + problemType.getPath())
+                .title(problemType.getTitle())
+                .detail(detail)
+                .uiMessage(uiMessage)
+                .fields(fields)
                 .build()
     }
 

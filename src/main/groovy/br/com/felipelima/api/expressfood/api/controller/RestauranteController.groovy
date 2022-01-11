@@ -1,7 +1,5 @@
 package br.com.felipelima.api.expressfood.api.controller
 
-import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
-import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.service.RestauranteService
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.validation.Valid
 import java.lang.reflect.Field
 
 @RestController
@@ -49,7 +48,7 @@ class RestauranteController {
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody Restaurante restaurante){
+    ResponseEntity<?> create(@RequestBody @Valid Restaurante restaurante){
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.create(restaurante))
     }
 

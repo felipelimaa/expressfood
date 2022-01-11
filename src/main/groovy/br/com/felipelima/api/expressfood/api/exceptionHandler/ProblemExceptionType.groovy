@@ -8,7 +8,8 @@ enum ProblemExceptionType {
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     MENSAGEM_NAO_LEGIVEL("/mensagem-nao-legivel", "Mensagem não legível"),
     PARAMETRO_INVALIDO("/parametro-invalido", "Parametro inválido"),
-    ERRO_NAO_TRATADO("/erro-nao-tratado", "Erro não tratado")
+    ERRO_NAO_TRATADO("/erro-nao-tratado", "Erro não tratado"),
+    DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos")
 
 
     String title

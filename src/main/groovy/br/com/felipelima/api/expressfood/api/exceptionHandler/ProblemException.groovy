@@ -22,4 +22,14 @@ class ProblemException {
 
     String uiMessage
 
+    List<Field> fields
+
+    @Builder
+    static class Field {
+
+        String name
+
+        String uiMessage
+    }
+
 }

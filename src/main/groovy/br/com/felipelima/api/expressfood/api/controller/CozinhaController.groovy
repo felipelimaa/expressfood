@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.validation.Valid
+
 @RestController
 @RequestMapping("/cozinhas")
 class CozinhaController {
@@ -33,7 +35,7 @@ class CozinhaController {
     }
 
     @PostMapping
-    ResponseEntity<Cozinha> create(@RequestBody Cozinha cozinha){
+    ResponseEntity<Cozinha> create(@RequestBody @Valid Cozinha cozinha){
         Cozinha cozinhaAdded = cozinhaService.create(cozinha)
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaAdded)
     }
