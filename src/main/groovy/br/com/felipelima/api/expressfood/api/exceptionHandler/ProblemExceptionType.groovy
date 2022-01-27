@@ -1,7 +1,5 @@
 package br.com.felipelima.api.expressfood.api.exceptionHandler
 
-import org.springframework.beans.factory.annotation.Value
-
 enum ProblemExceptionType {
 
     RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado"),

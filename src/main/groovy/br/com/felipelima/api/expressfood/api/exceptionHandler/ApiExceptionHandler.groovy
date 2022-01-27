@@ -7,7 +7,11 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.PropertyBindingException
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.beans.TypeMismatchException
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -36,6 +40,9 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static String MSG_ERRO_GENERICO = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
             "problema persistir, entre em contato com o administrador e sistema."
+
+    @Autowired
+    MessageSource messageSource
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -110,11 +117,14 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<ProblemException.Field> problemFields = bindingResult.getFieldErrors()
                 .stream()
-                .map(fieldError -> ProblemException.Field.builder()
-                    .name(fieldError.getField())
-                    .uiMessage(fieldError.getDefaultMessage())
-                    .build()
-                )
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale())
+
+                    ProblemException.Field.builder()
+                            .name(fieldError.getField())
+                            .uiMessage(message)
+                            .build()
+                })
                 .collect(Collectors.toList())
 
         ProblemException problem = createProblemBuilder(status, problemType, mensagem, mensagem, problemFields)
@@ -155,7 +165,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     ResponseEntity<?> handleUncaught(Exception e, WebRequest request){
 
-        if (PRINT_LOG_EXCEPTION == true) {
+        if (PRINT_LOG_EXCEPTION) {
             print(e.printStackTrace())
         }
         ProblemExceptionType problemType = ProblemExceptionType.ERRO_NAO_TRATADO
@@ -163,6 +173,21 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR
 
         ProblemException problem = createProblemBuilder(status, problemType, MSG_ERRO_GENERICO, MSG_ERRO_GENERICO)
+
+        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request)
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    ResponseEntity<?> handleIllegalArgumentException(InvalidDataAccessApiUsageException e, WebRequest request){
+        if (PRINT_LOG_EXCEPTION) {
+            print(e.printStackTrace())
+        }
+
+        ProblemExceptionType problemType = ProblemExceptionType.ERRO_NAO_TRATADO
+
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR
+
+        ProblemException problem = createProblemBuilder(status, problemType, MSG_ERRO_GENERICO, "IllegalArgumentException")
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request)
     }
