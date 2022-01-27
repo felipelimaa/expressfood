@@ -53,7 +53,7 @@ class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@RequestBody Restaurante restaurante, @PathVariable Long id){
+    ResponseEntity<?> update(@RequestBody @Valid Restaurante restaurante, @PathVariable Long id){
         return ResponseEntity.ok(restauranteService.update(restaurante, id))
     }
 
@@ -91,7 +91,7 @@ class RestauranteController {
         } catch (IllegalArgumentException e) {
             Throwable rootCause = ExceptionUtils.getRootCause(e)
 
-            throw new HttpMessageNotReadableException(e.getMessage(), rootCause)
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, null)
         }
 
     }

@@ -1,6 +1,6 @@
 package br.com.felipelima.api.expressfood.domain.model
 
-import br.com.felipelima.api.expressfood.api.Groups
+import br.com.felipelima.api.expressfood.core.validation.Groups
 import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString

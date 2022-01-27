@@ -1,9 +1,9 @@
 package br.com.felipelima.api.expressfood.domain.service
 
+
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
-import br.com.felipelima.api.expressfood.domain.repository.CozinhaRepository
 import br.com.felipelima.api.expressfood.domain.repository.RestauranteRepository
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +17,8 @@ import javax.transaction.Transactional
 class RestauranteService {
 
     String MSG_RESTAURANTE_NOT_FOUND = "Restaurante de código %d não encontrado."
+
+    String MSG_COZINHA_NOT_FOUND = "Cozinha de código %d não encontrado."
 
     String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso."
 

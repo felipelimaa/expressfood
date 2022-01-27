@@ -27,6 +27,10 @@ class CozinhaService {
     }
 
     Cozinha get(Long id){
+        if(id == null){
+            throw new EntidadeNotFoundException(HttpStatus.NOT_FOUND, String.format(MSG_COZINHA_NOT_FOUND, id))
+        }
+
         return cozinhaRepository.findById(id).orElseThrow{
             new EntidadeNotFoundException(
                     HttpStatus.NOT_FOUND,

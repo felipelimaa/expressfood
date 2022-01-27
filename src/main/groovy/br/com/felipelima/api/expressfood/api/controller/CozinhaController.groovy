@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import javax.validation.Valid
 
+
 @RestController
 @RequestMapping("/cozinhas")
 class CozinhaController {
@@ -41,7 +42,7 @@ class CozinhaController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Cozinha> update(@RequestBody Cozinha cozinha, @PathVariable Long id){
+    ResponseEntity<Cozinha> update(@RequestBody @Valid Cozinha cozinha, @PathVariable Long id){
         Cozinha cozinhaUpdated = cozinhaService.update(cozinha, id)
         return ResponseEntity.ok(cozinhaUpdated)
     }
