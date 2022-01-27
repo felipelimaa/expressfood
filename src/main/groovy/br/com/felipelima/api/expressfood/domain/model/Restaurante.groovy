@@ -1,6 +1,7 @@
 package br.com.felipelima.api.expressfood.domain.model
 
 import br.com.felipelima.api.expressfood.core.validation.Groups
+import br.com.felipelima.api.expressfood.core.validation.ValidaDescricaoQuandoValorZerado
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.EqualsAndHashCode
@@ -25,8 +26,10 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.PositiveOrZero
 import javax.validation.groups.ConvertGroup
+import javax.validation.groups.Default
 import java.time.LocalDateTime
 
+@ValidaDescricaoQuandoValorZerado(atributoDescricao = "nome", atributoDescricaoConteudo = "Frete Grátis", atributoValor = "taxaFrete")
 @Entity
 @ToString(includePackage = false, includeNames = true)
 @EqualsAndHashCode
@@ -46,7 +49,7 @@ class Restaurante {
 
     @Valid
     @NotNull
-    @ConvertGroup(to = Groups.CozinhaId.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)

@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.api.exceptionHandler
 
+import br.com.felipelima.api.expressfood.core.validation.ValidationException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import com.ctc.wstx.exc.WstxUnexpectedCharException
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.lang.Nullable
 import org.springframework.validation.BindingResult
+import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -41,13 +43,15 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static String MSG_ERRO_GENERICO = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
             "problema persistir, entre em contato com o administrador e sistema."
 
+    public static String MSG_DADOS_INVALIDOS = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."
+
     @Autowired
     MessageSource messageSource
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        if (PRINT_LOG_EXCEPTION == true) {
+        if (PRINT_LOG_EXCEPTION) {
             print(ex.printStackTrace())
         }
 
@@ -109,27 +113,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request
     ) {
 
-        ProblemExceptionType problemType = ProblemExceptionType.DADOS_INVALIDOS
-
-        String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."
-
-        BindingResult bindingResult = ex.getBindingResult()
-
-        List<ProblemException.Field> problemFields = bindingResult.getFieldErrors()
-                .stream()
-                .map(fieldError -> {
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale())
-
-                    ProblemException.Field.builder()
-                            .name(fieldError.getField())
-                            .uiMessage(message)
-                            .build()
-                })
-                .collect(Collectors.toList())
-
-        ProblemException problem = createProblemBuilder(status, problemType, mensagem, mensagem, problemFields)
-
-        return handleExceptionInternal(ex, problem, headers, status, request)
+        return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request)
 
     }
 
@@ -160,6 +144,15 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         return super.handleTypeMismatch(ex, headers, status, request)
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    ResponseEntity<Object> handleValidationException(ValidationException e, WebRequest request){
+        if(PRINT_LOG_EXCEPTION) {
+            print(e.getStackTrace())
+        }
+
+        return handleValidationInternal(e, e.getBindingResult(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request)
     }
 
     @ExceptionHandler(Exception.class)
@@ -313,7 +306,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             ProblemExceptionType problemType,
             String detail,
             String uiMessage,
-            List<ProblemException.Field> fields
+            List<ProblemException.Object> fields
     ){
 
         if (uiMessage == null) {
@@ -327,11 +320,48 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .title(problemType.getTitle())
                 .detail(detail)
                 .uiMessage(uiMessage)
-                .fields(fields)
+                .objects(fields)
                 .build()
     }
 
-    private String joinPath(List<Reference> references) {
+    private ResponseEntity<Object> handleValidationInternal(
+            Exception ex,
+            BindingResult bindingResult,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ){
+        if (PRINT_LOG_EXCEPTION) {
+            print(ex.printStackTrace())
+        }
+
+        ProblemExceptionType problemType = ProblemExceptionType.DADOS_INVALIDOS
+
+        List<ProblemException.Object> problemObjects = bindingResult.getAllErrors()
+                .stream()
+                .map(objectError -> {
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale())
+
+                    String name = objectError.getObjectName()
+
+                    if ( objectError instanceof FieldError ){
+                        name = ((FieldError) objectError).getField()
+                    }
+
+                    ProblemException.Object.builder()
+                            .name(name)
+                            .uiMessage(message)
+                            .build()
+                })
+                .collect(Collectors.toList())
+
+        ProblemException problem = createProblemBuilder(status, problemType, MSG_DADOS_INVALIDOS, MSG_DADOS_INVALIDOS, problemObjects)
+
+        return handleExceptionInternal(ex, problem, headers, status, request)
+
+    }
+
+    private static String joinPath(List<Reference> references) {
         return references.stream().map(ref -> ref.getFieldName()).collect(Collectors.joining("."))
     }
 }

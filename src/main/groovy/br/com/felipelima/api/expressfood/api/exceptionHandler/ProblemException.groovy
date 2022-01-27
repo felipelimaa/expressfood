@@ -22,10 +22,10 @@ class ProblemException {
 
     String uiMessage
 
-    List<Field> fields
+    List<Object> objects
 
     @Builder
-    static class Field {
+    static class Object {
 
         String name
 

@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.api.controller
 
+import br.com.felipelima.api.expressfood.core.validation.ValidationException
 import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.service.RestauranteService
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.util.ReflectionUtils
+import org.springframework.validation.BeanPropertyBindingResult
+import org.springframework.validation.SmartValidator
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -29,6 +32,9 @@ class RestauranteController {
 
     @Autowired
     RestauranteService restauranteService
+
+    @Autowired
+    SmartValidator smartValidator
 
     @GetMapping
     ResponseEntity<Restaurante> findAll(){
@@ -62,6 +68,7 @@ class RestauranteController {
         Restaurante restauranteExists = restauranteService.get(id)
 
         merge(campos, restauranteExists)
+        validate(restauranteExists, "restaurante")
 
         return update(restauranteExists, id)
     }
@@ -70,6 +77,16 @@ class RestauranteController {
     ResponseEntity<?> remove(@PathVariable Long id){
         Restaurante restauranteDeleted = restauranteService.remove(id)
         return ResponseEntity.noContent().build()
+    }
+
+    private validate(Restaurante restaurante, String objectName) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName)
+
+        smartValidator.validate(restaurante, bindingResult)
+
+        if(bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult)
+        }
     }
 
     private merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino){
