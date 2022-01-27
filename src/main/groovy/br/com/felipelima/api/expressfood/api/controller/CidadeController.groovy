@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.validation.Valid
+
 @RestController
 @RequestMapping("/cidades")
 class CidadeController {
@@ -34,12 +36,12 @@ class CidadeController {
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody Cidade cidade){
+    ResponseEntity<?> create(@RequestBody @Valid Cidade cidade){
         return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.create(cidade))
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@RequestBody Cidade cidade, @PathVariable Long id){
+    ResponseEntity<?> update(@RequestBody @Valid Cidade cidade, @PathVariable Long id){
         return ResponseEntity.ok(cidadeService.update(cidade, id))
     }
 
