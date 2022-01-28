@@ -1,20 +1,18 @@
-package br.com.felipelima.api.expressfood
+package br.com.felipelima.api.expressfood.service
 
+import br.com.felipelima.api.expressfood.test.GeneralTest
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.domain.service.CozinhaService
-import br.com.felipelima.api.expressfood.domain.service.RestauranteService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 
 import javax.validation.ConstraintViolationException
 
 import static org.junit.jupiter.api.Assertions.*
 
-@SpringBootTest
-class CadastroCozinhaIntegrationTests {
+class CozinhaServiceTest extends GeneralTest {
 
 	@Autowired
 	CozinhaService cozinhaService
