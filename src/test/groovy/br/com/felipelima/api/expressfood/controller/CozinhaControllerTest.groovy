@@ -1,5 +1,6 @@
 package br.com.felipelima.api.expressfood.controller
 
+import br.com.felipelima.api.expressfood.api.exceptionHandler.ProblemExceptionType
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.domain.service.CozinhaService
 import br.com.felipelima.api.expressfood.test.GeneralTest
@@ -63,7 +64,7 @@ class CozinhaControllerTest extends GeneralTest {
             .andExpectAll (
                 status().isNotFound() ,
                 content().contentType(MediaType.APPLICATION_JSON) ,
-                jsonPath("title").value("Recurso não encontrado")
+                jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO.getTitle())
             )
             .andReturn().response
     }
@@ -75,7 +76,7 @@ class CozinhaControllerTest extends GeneralTest {
             .andExpectAll(
                 status().isConflict(),
                 content().contentType(MediaType.APPLICATION_JSON),
-                jsonPath("title").value("Entidade em uso")
+                jsonPath("title").value(ProblemExceptionType.ENTIDADE_EM_USO.getTitle())
             )
             .andReturn().response
     }
@@ -87,7 +88,7 @@ class CozinhaControllerTest extends GeneralTest {
             .andExpectAll(
                 status().isNotFound(),
                 content().contentType(MediaType.APPLICATION_JSON),
-                jsonPath("title").value("Recurso não encontrado")
+                jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO.getTitle())
             )
     }
 
