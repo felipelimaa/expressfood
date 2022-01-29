@@ -21,12 +21,23 @@ class RestauranteServiceTest extends GeneralTest {
     @Autowired
     RestauranteService restauranteService
 
+    Restaurante criaRestaurante() {
+        return new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.99, cozinha: recuperaCozinha())
+    }
+
+    Cozinha recuperaCozinha() {
+        Cozinha cozinha = cozinhaService.get(1)
+        if (cozinha.id == null) {
+            Cozinha cozinhaCreated = cozinhaService.create(new Cozinha(nome: "Chinesa"))
+            return cozinhaCreated
+        }
+        return cozinha
+    }
+
     //TODO: Testar a criacao de um restaurante com sucesso
     @Test
     void restaurante_InserirComSucesso() {
-        Cozinha cozinha = cozinhaService.get(1)
-
-        Restaurante restaurante = new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.99, cozinha: cozinha)
+        Restaurante restaurante = criaRestaurante()
         Restaurante restauranteCreated = restauranteService.create(restaurante)
 
         assertEquals(restauranteCreated.nome, restaurante.nome)
@@ -36,33 +47,10 @@ class RestauranteServiceTest extends GeneralTest {
 
     }
 
-    //TODO: Testar restaurante com frete negativo
-    @Test
-    void restaurante_InserirFreteNegativo() {
-        Cozinha cozinha = cozinhaService.get(1)
-
-        Restaurante restaurante = new Restaurante(nome: "Casa do Sabor", taxaFrete: -1, cozinha: cozinha)
-
-        assertThrows(ConstraintViolationException.class, { restauranteService.create(restaurante) })
-
-    }
-
-    //TODO: Testar restaurante com frete gratis sem descricao "Frete Grátis"
-    @Test
-    void restaurante_InserirFreteGratisSemDescricao() {
-        Cozinha cozinha = cozinhaService.get(1)
-
-        Restaurante restaurante = new Restaurante(nome: "Casa do Sabor", taxaFrete: 0, cozinha: cozinha)
-
-        assertThrows(ConstraintViolationException.class, { restauranteService.create(restaurante) })
-    }
-
     //TODO: Testar restaurante sem nome
     @Test
     void restaurante_InserirSemNome() {
-        Cozinha cozinha = cozinhaService.get(1)
-
-        Restaurante restaurante = new Restaurante(nome: "", taxaFrete: 2, cozinha: cozinha)
+        Restaurante restaurante = new Restaurante(nome: "", taxaFrete: 2, cozinha: recuperaCozinha())
 
         assertThrows(ConstraintViolationException.class, { restauranteService.create(restaurante) })
     }
@@ -70,8 +58,7 @@ class RestauranteServiceTest extends GeneralTest {
     //TODO: Testar a criação e recuperação de um ID
     @Test
     void restaurante_CriaERecuperaId() {
-        Cozinha cozinha = cozinhaService.get(1)
-        Restaurante restaurante = restauranteService.create(new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.00, cozinha: cozinha))
+        Restaurante restaurante = restauranteService.create(criaRestaurante())
 
         Restaurante restauranteRecovered = restauranteService.get(restaurante.id)
 
@@ -90,8 +77,7 @@ class RestauranteServiceTest extends GeneralTest {
     //TODO: Testar a exclusão com sucesso
     @Test
     void restaurante_ExcluirComSucesso() {
-        Cozinha cozinha = cozinhaService.get(1)
-        Restaurante restaurante = restauranteService.create(new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.00, cozinha: cozinha))
+        Restaurante restaurante = restauranteService.create(criaRestaurante())
 
         Restaurante restauranteRemoved = restauranteService.remove(restaurante.id)
 
@@ -104,6 +90,36 @@ class RestauranteServiceTest extends GeneralTest {
     void restaurante_ExcluirInexistente() {
         Cozinha cozinha = cozinhaService.get(1)
         assertThrows(EntidadeNotFoundException.class, { restauranteService.remove(Integer.MAX_VALUE) })
+    }
+
+    //TODO: Testar restaurante com frete negativo
+    @Test
+    void restaurante_InserirFreteNegativo() {
+        Restaurante restaurante = new Restaurante(nome: "Casa do Sabor", taxaFrete: -1, cozinha: recuperaCozinha())
+
+        assertThrows(ConstraintViolationException.class, { restauranteService.create(restaurante) })
+
+    }
+
+    //TODO: Testar restaurante com frete gratis sem descricao "Frete Grátis"
+    @Test
+    void restaurante_InserirFreteGratisSemDescricao() {
+        Restaurante restaurante = new Restaurante(nome: "Casa do Sabor", taxaFrete: 0, cozinha: recuperaCozinha())
+
+        assertThrows(ConstraintViolationException.class, { restauranteService.create(restaurante) })
+    }
+
+    //TODO: Testar restaurante com frete grátis e descrição "Frete Grátis"
+    @Test
+    void restaurante_InserirFreteGratisComDescricaoCorreta(){
+        Restaurante restaurante = new Restaurante(nome: "Casa do Sabor - Frete Grátis", taxaFrete: 0, cozinha: recuperaCozinha())
+
+        Restaurante restauranteCreated = restauranteService.create(restaurante)
+
+        assertEquals(restauranteCreated.nome, restaurante.nome)
+        assertEquals(restauranteCreated.taxaFrete, restaurante.taxaFrete)
+        assertEquals(restauranteCreated.cozinha.id, restaurante.cozinha.id)
+        assertTrue(restauranteCreated.id > 0)
     }
 
 }

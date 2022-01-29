@@ -13,6 +13,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 
+import java.nio.charset.StandardCharsets
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import static org.junit.jupiter.api.Assertions.*
@@ -31,15 +33,23 @@ class RestauranteControllerTest extends GeneralTest{
     @Autowired
     CozinhaService cozinhaService
 
+    Restaurante criaRestaurante() {
+        return new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.99, cozinha: recuperaCozinha())
+    }
+
+    Cozinha recuperaCozinha() {
+        Cozinha cozinha = cozinhaService.get(1)
+        if (cozinha.id == null) {
+            Cozinha cozinhaCreated = cozinhaService.create(new Cozinha(nome: "Chinesa"))
+            return cozinhaCreated
+        }
+        return cozinha
+    }
+
     //TODO: Testar a criacao de um restaurante com sucesso
     @Test
     void restaurante_InserirComSucesso() {
-        Cozinha cozinha = cozinhaService.get(1)
-        def restaurante = new Restaurante(
-                nome: "Casa do Sabor",
-                taxaFrete: 2.99,
-                cozinha: cozinha
-        )
+        def restaurante = criaRestaurante()
 
         def response = mvc.perform(
                 post("/restaurantes")
@@ -59,8 +69,7 @@ class RestauranteControllerTest extends GeneralTest{
     //TODO: Testar a criação e recuperação de um id
     @Test
     void restaurante_CriaERecuperaId() {
-        Cozinha cozinha = cozinhaService.get(1)
-        def restaurante = restauranteService.create(new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.99, cozinha: cozinha))
+        def restaurante = restauranteService.create(criaRestaurante())
 
         def response = mvc.perform(get("/restaurantes/${restaurante.id}"))
             .andDo(MockMvcResultHandlers.print())
@@ -88,6 +97,17 @@ class RestauranteControllerTest extends GeneralTest{
             .andReturn().response
     }
 
+    //TODO: Testar a exclusão com sucesso
+    @Test
+    void restaurante_ExcluirComSucesso() {
+        def restaurante = restauranteService.create(criaRestaurante())
+
+        def response = mvc.perform(delete("/restaurantes/${restaurante.id}"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isNoContent())
+            .andReturn().response
+    }
+
     //TODO: Testar a exclusão de um restaurante inexistente
     @Test
     void restaurante_ExcluirInexistente() {
@@ -104,11 +124,10 @@ class RestauranteControllerTest extends GeneralTest{
     //TODO: Testar restaurante com frete negativo
     @Test
     void restaurante_InserirFreteNegativo() {
-        Cozinha cozinha = cozinhaService.get(1)
         def restaurante = new Restaurante(
             nome: "Casa do Sabor",
             taxaFrete: -5,
-            cozinha: cozinha
+            cozinha: recuperaCozinha()
         )
 
         def response = mvc.perform(
@@ -128,11 +147,10 @@ class RestauranteControllerTest extends GeneralTest{
     //TODO: Testar restaurante com frete gratis sem descricao "Frete Grátis"
     @Test
     void restaurante_InserirFreteGratisSemDescricao() {
-        Cozinha cozinha = cozinhaService.get(1)
         def restaurante = new Restaurante(
             nome: "Casa do Sabor",
             taxaFrete: 0,
-            cozinha: cozinha
+            cozinha: recuperaCozinha()
         )
 
         def response = mvc.perform(
@@ -152,11 +170,10 @@ class RestauranteControllerTest extends GeneralTest{
     //TODO: Testar restaurante sem nome
     @Test
     void restaurante_InserirSemNome() {
-        Cozinha cozinha = cozinhaService.get(1)
         def restaurante = new Restaurante(
             nome: "",
             taxaFrete: 1,
-            cozinha: cozinha
+            cozinha: recuperaCozinha()
         )
 
         def response = mvc.perform(
@@ -170,5 +187,26 @@ class RestauranteControllerTest extends GeneralTest{
                 jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS.getTitle()),
                 jsonPath("objects[*].name").value("nome")
             )
+    }
+
+    //TODO: Testar restaurante com frete grátis e descrição "Frete Grátis"
+    @Test
+    void restaurante_InserirFreteGratisComDescricaoCorreta(){
+        def restaurante = new Restaurante(nome: "Casa do Sabor - Frete Grátis", taxaFrete: 0, cozinha: recuperaCozinha())
+
+        def response = mvc.perform(
+            post("/restaurantes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(restaurante)))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isCreated())
+            .andReturn().response
+
+        Restaurante restauranteReturn = objectMapper.readerFor(Restaurante.class).readValue(response.getContentAsString(StandardCharsets.UTF_8))
+
+        assertEquals(restauranteReturn.nome, restaurante.nome)
+        assertEquals(restauranteReturn.taxaFrete, restaurante.taxaFrete)
+        assertEquals(restauranteReturn.cozinha.id, restaurante.cozinha.id)
+        assertNotNull(restauranteReturn.id)
     }
 }
