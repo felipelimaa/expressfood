@@ -83,7 +83,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andExpectAll(
                 status().isNotFound(),
                 content().contentType(MediaType.APPLICATION_JSON),
-                jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO)
+                jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO.getTitle())
             )
             .andReturn().response
     }
@@ -96,7 +96,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andExpectAll(
                 status().isNotFound(),
                 content().contentType(MediaType.APPLICATION_JSON),
-                jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO)
+                jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO.getTitle())
             )
             .andReturn().response
     }
@@ -119,7 +119,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andExpectAll(
                 status().isBadRequest(),
                 content().contentType(MediaType.APPLICATION_JSON),
-                jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS),
+                jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS.getTitle()),
                 jsonPath("objects[*].name").value("taxaFrete")
             )
             .andReturn().response
@@ -143,7 +143,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andExpectAll(
                     status().isBadRequest(),
                     content().contentType(MediaType.APPLICATION_JSON),
-                    jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS),
+                    jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS.getTitle()),
                     jsonPath("objects[*].name").value("restaurante")
             )
             .andReturn().response
@@ -167,7 +167,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andExpectAll(
                 status().isBadRequest(),
                 content().contentType(MediaType.APPLICATION_JSON),
-                jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS),
+                jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS.getTitle()),
                 jsonPath("objects[*].name").value("nome")
             )
     }
