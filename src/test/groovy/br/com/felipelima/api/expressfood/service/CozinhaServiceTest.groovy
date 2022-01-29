@@ -53,6 +53,8 @@ class CozinhaServiceTest extends GeneralTest {
 	void cozinha_ExcluirComSucesso() {
 		Cozinha cozinha = cozinhaService.create(new Cozinha(nome: "Chinesa"))
 		Cozinha cozinhaRemoved = cozinhaService.remove(cozinha.id)
+
+		assertNull(cozinhaRemoved)
 	}
 
 	@Test
