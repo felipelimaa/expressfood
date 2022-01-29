@@ -57,7 +57,7 @@ class CozinhaServiceTest extends GeneralTest {
 
 	@Test
 	void cozinha_ExcluirEmUso() {
-		assertThrows(EntidadeEmUsoException.class, { cozinhaService.remove(3)})
+		assertThrows(EntidadeEmUsoException.class, { cozinhaService.remove(1L)})
 	}
 
 	@Test

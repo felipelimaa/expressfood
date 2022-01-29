@@ -6,6 +6,6 @@ import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 abstract class GeneralTest {
 }

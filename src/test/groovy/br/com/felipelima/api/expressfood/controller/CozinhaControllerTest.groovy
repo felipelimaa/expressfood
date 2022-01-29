@@ -1,11 +1,9 @@
 package br.com.felipelima.api.expressfood.controller
 
-import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
 import br.com.felipelima.api.expressfood.domain.service.CozinhaService
 import br.com.felipelima.api.expressfood.test.GeneralTest
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jayway.jsonpath.JsonPath
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -72,7 +70,7 @@ class CozinhaControllerTest extends GeneralTest {
 
     @Test
     void cozinha_ExcluirEmUso() {
-        def response = mvc.perform(delete("/cozinhas/3"))
+        def response = mvc.perform(delete("/cozinhas/${1L}"))
             .andDo(MockMvcResultHandlers.print())
             .andExpectAll(
                 status().isConflict(),
