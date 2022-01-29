@@ -1,5 +1,7 @@
 package br.com.felipelima.api.expressfood.service
 
+import br.com.felipelima.api.expressfood.domain.model.Restaurante
+import br.com.felipelima.api.expressfood.domain.service.RestauranteService
 import br.com.felipelima.api.expressfood.test.GeneralTest
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeEmUsoException
 import br.com.felipelima.api.expressfood.domain.exception.EntidadeNotFoundException
@@ -17,28 +19,32 @@ class CozinhaServiceTest extends GeneralTest {
 	@Autowired
 	CozinhaService cozinhaService
 
-	@Test
-	void cozinha_TestarCriacaoComSucesso() {
-		// cenário
-		Cozinha cozinha = new Cozinha(nome: "Chinesa")
+	@Autowired
+	RestauranteService restauranteService
 
-		// ação
+	static Cozinha criaCozinha(){
+		return new Cozinha(nome: "Chinesa")
+	}
+
+	@Test
+	void cozinha_InserirComSucesso() {
+		Cozinha cozinha = criaCozinha()
+
 		Cozinha cozinhaCreated = cozinhaService.create(cozinha)
 
-		// validação
 		assertEquals(cozinhaCreated.nome, cozinha.nome)
 		assertTrue(cozinhaCreated.id > 0)
 	}
 
 	@Test
-	void cozinha_TestarCriacaoSemNome() {
+	void cozinha_InserirSemNome() {
 		Cozinha cozinha = new Cozinha(nome: null)
 		assertThrows(ConstraintViolationException.class, { cozinhaService.create(cozinha)  })
 	}
 
 	@Test
 	void cozinha_CriaERecuperaId() {
-		Cozinha cozinha = cozinhaService.create(new Cozinha(nome: "Chinesa"))
+		Cozinha cozinha = cozinhaService.create(criaCozinha())
 		Cozinha cozinhaRecovery = cozinhaService.get(cozinha.id)
 		assertEquals(cozinhaRecovery.id, cozinha.id)
 		assertEquals(cozinhaRecovery.nome, cozinha.nome)
@@ -51,7 +57,7 @@ class CozinhaServiceTest extends GeneralTest {
 
 	@Test
 	void cozinha_ExcluirComSucesso() {
-		Cozinha cozinha = cozinhaService.create(new Cozinha(nome: "Chinesa"))
+		Cozinha cozinha = cozinhaService.create(criaCozinha())
 		Cozinha cozinhaRemoved = cozinhaService.remove(cozinha.id)
 
 		assertNull(cozinhaRemoved)
@@ -59,7 +65,10 @@ class CozinhaServiceTest extends GeneralTest {
 
 	@Test
 	void cozinha_ExcluirEmUso() {
-		assertThrows(EntidadeEmUsoException.class, { cozinhaService.remove(1L)})
+		Cozinha cozinha = cozinhaService.create(criaCozinha())
+		Restaurante restaurante = restauranteService.create(new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.99, cozinha: cozinha))
+
+		assertThrows(EntidadeEmUsoException.class, { cozinhaService.remove(cozinha.id)})
 	}
 
 	@Test

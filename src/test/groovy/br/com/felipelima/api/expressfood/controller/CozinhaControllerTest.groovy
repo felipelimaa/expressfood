@@ -2,7 +2,9 @@ package br.com.felipelima.api.expressfood.controller
 
 import br.com.felipelima.api.expressfood.api.exceptionHandler.ProblemExceptionType
 import br.com.felipelima.api.expressfood.domain.model.Cozinha
+import br.com.felipelima.api.expressfood.domain.model.Restaurante
 import br.com.felipelima.api.expressfood.domain.service.CozinhaService
+import br.com.felipelima.api.expressfood.domain.service.RestauranteService
 import br.com.felipelima.api.expressfood.test.GeneralTest
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
@@ -26,9 +28,16 @@ class CozinhaControllerTest extends GeneralTest {
     @Autowired
     CozinhaService cozinhaService
 
+    @Autowired
+    RestauranteService restauranteService
+
+    static Cozinha criaCozinha(){
+        return new Cozinha(nome: "Indiana")
+    }
+
     @Test
-    void cozinha_TestarCriacaoComSucesso() {
-        def cozinha = new Cozinha(nome: "Indiana")
+    void cozinha_InserirComSucesso() {
+        def cozinha = criaCozinha()
 
         def response = mvc.perform(
                 post("/cozinhas")
@@ -43,9 +52,29 @@ class CozinhaControllerTest extends GeneralTest {
         assertNotNull(cozinhaReturn.id)
     }
 
+    //TODO: Testar a criação sem nome
+    @Test
+    void cozinha_InserirSemNome() {
+        def cozinha = new Cozinha(nome: "")
+
+        def response = mvc.perform(
+            post("/cozinhas")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(cozinha)))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpectAll(
+                status().isBadRequest(),
+                content().contentType(MediaType.APPLICATION_JSON),
+                jsonPath("title").value(ProblemExceptionType.DADOS_INVALIDOS.getTitle()),
+                jsonPath("objects[*].name").value("nome")
+            )
+            .andReturn().response
+
+    }
+
     @Test
     void cozinha_CriaERecuperaId() {
-        def cozinha = cozinhaService.create(new Cozinha(nome: "Indiana"))
+        def cozinha = cozinhaService.create(criaCozinha())
 
         def response = mvc.perform(get("/cozinhas/${cozinha.id}"))
             .andDo(MockMvcResultHandlers.print())
@@ -69,9 +98,23 @@ class CozinhaControllerTest extends GeneralTest {
             .andReturn().response
     }
 
+    //TODO: Testar a exclusão com sucesso
+    @Test
+    void cozinha_ExcluirComSucesso() {
+        def cozinha = cozinhaService.create(criaCozinha())
+
+        def response = mvc.perform(delete("/cozinhas/${cozinha.id}"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isNoContent())
+            .andReturn().response
+    }
+
     @Test
     void cozinha_ExcluirEmUso() {
-        def response = mvc.perform(delete("/cozinhas/${1L}"))
+        def cozinha = cozinhaService.create(criaCozinha())
+        def restaurante = restauranteService.create(new Restaurante(nome: "Casa do Sabor", taxaFrete: 2.99, cozinha: cozinha))
+
+        def response = mvc.perform(delete("/cozinhas/${cozinha.id}"))
             .andDo(MockMvcResultHandlers.print())
             .andExpectAll(
                 status().isConflict(),
@@ -90,6 +133,7 @@ class CozinhaControllerTest extends GeneralTest {
                 content().contentType(MediaType.APPLICATION_JSON),
                 jsonPath("title").value(ProblemExceptionType.RECURSO_NAO_ENCONTRADO.getTitle())
             )
+            .andReturn().response
     }
 
 }
