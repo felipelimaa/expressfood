@@ -25,7 +25,7 @@ class CidadeServiceTest extends GeneralTest {
         return estadoService.findById(id)
     }
 
-    //TODO: Testar a criação com sucesso
+    //Testar a criação com sucesso
     @Test
     void cidade_InserirComSucesso() {
         Cidade cidade = new Cidade(nome: "Monte Alegre", estado: buscaEstado(1))
@@ -35,7 +35,7 @@ class CidadeServiceTest extends GeneralTest {
         assertTrue(cidadeCreated.id > 0)
     }
 
-    //TODO: Testar a criação sem nome
+    //Testar a criação sem nome
     @Test
     void cidade_InserirSemNome() {
         Cidade cidade = new Cidade(nome: "", estado: buscaEstado(1))
@@ -43,7 +43,7 @@ class CidadeServiceTest extends GeneralTest {
         assertThrows(ConstraintViolationException.class, { cidadeService.create(cidade)})
     }
 
-    //TODO: Testar a criação e recuperação de um ID
+    //Testar a criação e recuperação de um ID
     @Test
     void cidade_CriaERecuperaId(){
         Cidade cidade = cidadeService.create(new Cidade(nome: "Monte Alegre", estado: buscaEstado(1)))
@@ -53,13 +53,13 @@ class CidadeServiceTest extends GeneralTest {
         assertEquals(cidadeRecovered.nome, cidade.nome)
     }
 
-    //TODO: Testar a recuperação de um ID invalido
+    //Testar a recuperação de um ID invalido
     @Test
     void cidade_RecuperaIdInvalido(){
         assertThrows(EntidadeNotFoundException.class, { cidadeService.findById(Integer.MAX_VALUE) })
     }
 
-    //TODO: Testar a exclusão com sucesso
+    //Testar a exclusão com sucesso
     @Test
     void cidade_ExcluirComSucesso() {
         Cidade cidade = cidadeService.create(new Cidade(nome: "Monte Alegre", estado: buscaEstado(1)))
@@ -69,7 +69,7 @@ class CidadeServiceTest extends GeneralTest {
         assertNull(cidadeRemoved)
     }
 
-    //TODO: Testar a exclusão de um ID invalido
+    //Testar a exclusão de um ID invalido
     @Test
     void cidade_ExcluirInexistente() {
         assertThrows(EntidadeNotFoundException.class, { cidadeService.remove(Integer.MAX_VALUE) })

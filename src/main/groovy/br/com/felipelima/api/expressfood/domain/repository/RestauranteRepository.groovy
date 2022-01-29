@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface RestauranteRepository extends JpaRepository<Restaurante, Long>{
 
-    //TODO: Criar uma query usando Specifications (DDD) para consulta de frete gratis
     List<Restaurante> findByTaxaFreteEquals(@Param("taxaFrete") BigDecimal taxaFrete)
 
 }

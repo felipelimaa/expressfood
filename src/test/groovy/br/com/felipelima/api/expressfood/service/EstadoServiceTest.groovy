@@ -22,7 +22,7 @@ class EstadoServiceTest extends GeneralTest {
     @Autowired
     CidadeService cidadeService
 
-    //TODO: Testar a criação com sucesso
+    //Testar a criação com sucesso
     @Test
     void estado_InserirComSucesso() {
         Estado estado = new Estado(nome: "Rio Grande do Norte", uf: "RN")
@@ -33,14 +33,14 @@ class EstadoServiceTest extends GeneralTest {
         assertTrue(estadoCreated.id > 0)
     }
 
-    //TODO: Testar a criação sem nome
+    //Testar a criação sem nome
     @Test
     void estado_InserirSemNome() {
         Estado estado = new Estado(nome: "", uf: "RN")
         assertThrows(ConstraintViolationException.class, { estadoService.create(estado) })
     }
 
-    //TODO: Testar a criação e recuperação de um ID
+    //Testar a criação e recuperação de um ID
     @Test
     void estado_CriaERecuperaId(){
         Estado estado = estadoService.create(new Estado(nome: "Rio Grande do Norte", uf: "RN"))
@@ -51,13 +51,13 @@ class EstadoServiceTest extends GeneralTest {
         assertEquals(estadoRecovered.uf, estado.uf)
     }
 
-    //TODO: Testar a recuperação de um ID invalido
+    //Testar a recuperação de um ID invalido
     @Test
     void estado_RecuperaIdInvalido(){
         assertThrows(EntidadeNotFoundException.class, { estadoService.findById(Integer.MAX_VALUE) })
     }
 
-    //TODO: Testar a exclusão com sucesso
+    //Testar a exclusão com sucesso
     @Test
     void estado_ExcluirComSucesso() {
         Estado estado = estadoService.create(new Estado(nome: "Rio Grande do Norte", uf: "RN"))
@@ -66,13 +66,13 @@ class EstadoServiceTest extends GeneralTest {
         assertNull(estadoRemoved)
     }
 
-    //TODO: Testar a exclusão de um ID invalido
+    //Testar a exclusão de um ID invalido
     @Test
     void estado_ExcluirInexistente() {
         assertThrows(EntidadeNotFoundException.class, { estadoService.remove(Integer.MAX_VALUE) })
     }
 
-    //TODO: Testar a exclusão da entidade em uso
+    //Testar a exclusão da entidade em uso
     @Test
     void estado_ExcluirEmUso(){
         Estado estado = estadoService.create(new Estado(nome: "Rio Grande do Norte", uf: "RN"))

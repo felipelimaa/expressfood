@@ -46,7 +46,7 @@ class RestauranteControllerTest extends GeneralTest{
         return cozinha
     }
 
-    //TODO: Testar a criacao de um restaurante com sucesso
+    //Testar a criacao de um restaurante com sucesso
     @Test
     void restaurante_InserirComSucesso() {
         def restaurante = criaRestaurante()
@@ -66,7 +66,7 @@ class RestauranteControllerTest extends GeneralTest{
         assertNotNull(restauranteReturn.id)
     }
 
-    //TODO: Testar a criação e recuperação de um id
+    //Testar a criação e recuperação de um id
     @Test
     void restaurante_CriaERecuperaId() {
         def restaurante = restauranteService.create(criaRestaurante())
@@ -84,7 +84,7 @@ class RestauranteControllerTest extends GeneralTest{
         assertNotNull(restauranteReturn.id)
     }
 
-    //TODO: Testar a recuperação de um restaurante inexistente
+    //Testar a recuperação de um restaurante inexistente
     @Test
     void restaurante_RecuperaIdInvalido() {
         def response = mvc.perform(get("/restaurantes/${Integer.MAX_VALUE}"))
@@ -97,7 +97,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão com sucesso
+    //Testar a exclusão com sucesso
     @Test
     void restaurante_ExcluirComSucesso() {
         def restaurante = restauranteService.create(criaRestaurante())
@@ -108,7 +108,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão de um restaurante inexistente
+    //Testar a exclusão de um restaurante inexistente
     @Test
     void restaurante_ExcluirInexistente() {
         def response = mvc.perform(delete("/restaurantes/${Integer.MAX_VALUE}"))
@@ -121,7 +121,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andReturn().response
     }
 
-    //TODO: Testar restaurante com frete negativo
+    //Testar restaurante com frete negativo
     @Test
     void restaurante_InserirFreteNegativo() {
         def restaurante = new Restaurante(
@@ -144,7 +144,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andReturn().response
     }
 
-    //TODO: Testar restaurante com frete gratis sem descricao "Frete Grátis"
+    //Testar restaurante com frete gratis sem descricao "Frete Grátis"
     @Test
     void restaurante_InserirFreteGratisSemDescricao() {
         def restaurante = new Restaurante(
@@ -167,7 +167,7 @@ class RestauranteControllerTest extends GeneralTest{
             .andReturn().response
     }
 
-    //TODO: Testar restaurante sem nome
+    //Testar restaurante sem nome
     @Test
     void restaurante_InserirSemNome() {
         def restaurante = new Restaurante(
@@ -189,7 +189,7 @@ class RestauranteControllerTest extends GeneralTest{
             )
     }
 
-    //TODO: Testar restaurante com frete grátis e descrição "Frete Grátis"
+    //Testar restaurante com frete grátis e descrição "Frete Grátis"
     @Test
     void restaurante_InserirFreteGratisComDescricaoCorreta(){
         def restaurante = new Restaurante(nome: "Casa do Sabor - Frete Grátis", taxaFrete: 0, cozinha: recuperaCozinha())

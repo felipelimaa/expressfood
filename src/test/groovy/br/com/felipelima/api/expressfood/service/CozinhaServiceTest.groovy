@@ -26,6 +26,7 @@ class CozinhaServiceTest extends GeneralTest {
 		return new Cozinha(nome: "Chinesa")
 	}
 
+	//Testar a criação com sucesso
 	@Test
 	void cozinha_InserirComSucesso() {
 		Cozinha cozinha = criaCozinha()
@@ -36,12 +37,14 @@ class CozinhaServiceTest extends GeneralTest {
 		assertTrue(cozinhaCreated.id > 0)
 	}
 
+	//Testar a criação sem nome
 	@Test
 	void cozinha_InserirSemNome() {
 		Cozinha cozinha = new Cozinha(nome: null)
 		assertThrows(ConstraintViolationException.class, { cozinhaService.create(cozinha)  })
 	}
 
+	//Testar a criação e recuperação de um ID
 	@Test
 	void cozinha_CriaERecuperaId() {
 		Cozinha cozinha = cozinhaService.create(criaCozinha())
@@ -50,11 +53,13 @@ class CozinhaServiceTest extends GeneralTest {
 		assertEquals(cozinhaRecovery.nome, cozinha.nome)
 	}
 
+	//Testar a recuperação de um ID invalido
 	@Test
 	void cozinha_RecuperaIdInvalido() {
 		assertThrows(EntidadeNotFoundException.class, { cozinhaService.get(Integer.MAX_VALUE) })
 	}
 
+	//Testar a exclusão com sucesso
 	@Test
 	void cozinha_ExcluirComSucesso() {
 		Cozinha cozinha = cozinhaService.create(criaCozinha())
@@ -63,6 +68,7 @@ class CozinhaServiceTest extends GeneralTest {
 		assertNull(cozinhaRemoved)
 	}
 
+	//Testar a exclusão da entidade em uso
 	@Test
 	void cozinha_ExcluirEmUso() {
 		Cozinha cozinha = cozinhaService.create(criaCozinha())
@@ -71,6 +77,7 @@ class CozinhaServiceTest extends GeneralTest {
 		assertThrows(EntidadeEmUsoException.class, { cozinhaService.remove(cozinha.id)})
 	}
 
+	//Testar a exclusão de um ID invalido
 	@Test
 	void cozinha_ExcluirInexistente() {
 		assertThrows(EntidadeNotFoundException.class, { cozinhaService.remove(Integer.MAX_VALUE) })

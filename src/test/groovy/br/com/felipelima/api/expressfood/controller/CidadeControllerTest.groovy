@@ -35,7 +35,7 @@ class CidadeControllerTest extends GeneralTest {
         return estadoService.findById(id)
     }
 
-    //TODO: Testar a criação com sucesso
+    //Testar a criação com sucesso
     @Test
     void cidade_InserirComSucesso() {
         def cidade = new Cidade(nome: "Monte Alegre", estado: buscaEstado(1))
@@ -57,7 +57,7 @@ class CidadeControllerTest extends GeneralTest {
 
     }
 
-    //TODO: Testar a criação sem nome
+    //Testar a criação sem nome
     @Test
     void cidade_InserirSemNome() {
         def cidade = new Cidade(nome: "", estado: buscaEstado(1))
@@ -76,7 +76,7 @@ class CidadeControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a criação e recuperação de um ID
+    //Testar a criação e recuperação de um ID
     @Test
     void cidade_CriaERecuperaId(){
         def cidade = cidadeService.create(new Cidade(nome: "Monte Alegre", estado: buscaEstado(1)))
@@ -93,7 +93,7 @@ class CidadeControllerTest extends GeneralTest {
         assertNotNull(cidadeReturned.id)
     }
 
-    //TODO: Testar a recuperação de um ID invalido
+    //Testar a recuperação de um ID invalido
     @Test
     void cidade_RecuperaIdInvalido(){
         def response = mvc.perform(get("/cidades/${Integer.MAX_VALUE}"))
@@ -106,7 +106,7 @@ class CidadeControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão com sucesso
+    //Testar a exclusão com sucesso
     @Test
     void cidade_ExcluirComSucesso() {
         def cidade = cidadeService.create(new Cidade(nome: "Monte Alegre", estado: buscaEstado(1)))
@@ -117,7 +117,7 @@ class CidadeControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão de um ID invalido
+    //Testar a exclusão de um ID invalido
     @Test
     void cidade_ExcluirInexistente() {
         def response = mvc.perform(delete("/cidades/${Integer.MAX_VALUE}"))

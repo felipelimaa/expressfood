@@ -35,6 +35,7 @@ class CozinhaControllerTest extends GeneralTest {
         return new Cozinha(nome: "Indiana")
     }
 
+    //Testar a criação com sucesso
     @Test
     void cozinha_InserirComSucesso() {
         def cozinha = criaCozinha()
@@ -52,7 +53,7 @@ class CozinhaControllerTest extends GeneralTest {
         assertNotNull(cozinhaReturn.id)
     }
 
-    //TODO: Testar a criação sem nome
+    //Testar a criação sem nome
     @Test
     void cozinha_InserirSemNome() {
         def cozinha = new Cozinha(nome: "")
@@ -72,6 +73,7 @@ class CozinhaControllerTest extends GeneralTest {
 
     }
 
+    //Testar a criação e recuperação de um ID
     @Test
     void cozinha_CriaERecuperaId() {
         def cozinha = cozinhaService.create(criaCozinha())
@@ -86,6 +88,7 @@ class CozinhaControllerTest extends GeneralTest {
         assertNotNull(cozinhaReturn.id)
     }
 
+    //Testar a recuperação de um ID invalido
     @Test
     void cozinha_RecuperaIdInvalido() {
         def response = mvc.perform(get("/cozinhas/${Integer.MAX_VALUE}"))
@@ -98,7 +101,7 @@ class CozinhaControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão com sucesso
+    //Testar a exclusão com sucesso
     @Test
     void cozinha_ExcluirComSucesso() {
         def cozinha = cozinhaService.create(criaCozinha())
@@ -109,6 +112,7 @@ class CozinhaControllerTest extends GeneralTest {
             .andReturn().response
     }
 
+    //Testar a exclusão da entidade em uso
     @Test
     void cozinha_ExcluirEmUso() {
         def cozinha = cozinhaService.create(criaCozinha())
@@ -124,6 +128,7 @@ class CozinhaControllerTest extends GeneralTest {
             .andReturn().response
     }
 
+    //Testar a exclusão de um ID invalido
     @Test
     void cozinha_ExcluirInexistente() {
         def response = mvc.perform(delete("/cozinhas/${Integer.MAX_VALUE}"))

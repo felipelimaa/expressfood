@@ -35,7 +35,7 @@ class EstadoControllerTest extends GeneralTest {
         return new Estado(nome: "Rio Grande do Norte", uf: "RN")
     }
 
-    //TODO: Testar a criação com sucesso
+    //Testar a criação com sucesso
     @Test
     void estado_InserirComSucesso() {
         def estado = criaEstado()
@@ -55,7 +55,7 @@ class EstadoControllerTest extends GeneralTest {
         assertNotNull(estadoReturn.id)
     }
 
-    //TODO: Testar a criação sem nome
+    //Testar a criação sem nome
     @Test
     void estado_InserirSemNome() {
         def estado = new Estado(nome: "", uf: "RN")
@@ -74,7 +74,7 @@ class EstadoControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a criação e recuperação de um ID
+    //Testar a criação e recuperação de um ID
     @Test
     void estado_CriaERecuperaId(){
         def estado = estadoService.create(criaEstado())
@@ -91,7 +91,7 @@ class EstadoControllerTest extends GeneralTest {
         assertNotNull(estadoReturned.id)
     }
 
-    //TODO: Testar a recuperação de um ID invalido
+    //Testar a recuperação de um ID invalido
     @Test
     void estado_RecuperaIdInvalido(){
         def response = mvc.perform(get("/estados/${Integer.MAX_VALUE}"))
@@ -104,7 +104,7 @@ class EstadoControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão com sucesso
+    //Testar a exclusão com sucesso
     @Test
     void estado_ExcluirComSucesso() {
         def estado = estadoService.create(criaEstado())
@@ -115,7 +115,7 @@ class EstadoControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão de um ID invalido
+    //Testar a exclusão de um ID invalido
     @Test
     void estado_ExcluirInexistente() {
         def response = mvc.perform(delete("/estados/${Integer.MAX_VALUE}"))
@@ -128,7 +128,7 @@ class EstadoControllerTest extends GeneralTest {
             .andReturn().response
     }
 
-    //TODO: Testar a exclusão da entidade em uso
+    //Testar a exclusão da entidade em uso
     @Test
     void estado_ExcluirEmUso(){
         def estado = estadoService.create(criaEstado())
